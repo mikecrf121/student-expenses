@@ -5,7 +5,7 @@ Probably the best framework ever.
 
 Angular 11 , Node v14LTS
 
-This app is built from Ionic Starter App (Conference app, reason for number of contributors, will set up fresh repo later), for the tabs, and Basic Look and Feel (BLAF).
+This app is built from Ionic Starter App (Conference app), for the tabs, and Basic Look and Feel (BLAF).
 A good test to see if your ready to have a go at running this is if your able to run the starter app 
 provided by Ionic in the Cli.  If your able to get that up no problem, you shouldnt have any issues
 running this app either, as I have NOT added any major packages to it.
