@@ -1,0 +1,220 @@
+<ion-content class="speaker-detail">
+  <ion-header class="ion-no-border">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/admin/accounts" style="color: beige;background:black;border-radius: 30%;">
+        </ion-back-button>
+      </ion-buttons>
+      <ion-buttons slot="end"> </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <div style="text-align: center">
+    <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" style="text-align: center" />
+  </div>
+
+  <!--Skeleton-->
+  <div *ngIf="!data">
+    <ion-row>
+      <ion-col style="text-align: center">
+        <h2></h2>
+      </ion-col>
+    </ion-row>
+    <ion-list inset>
+      <ion-row>
+        <ion-col>
+          <h3>
+            <u>
+              <ion-skeleton-text animated style="width: 60%; size: 30px"><br /><br /></ion-skeleton-text>
+            </u>
+          </h3>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let item of deadData">
+        <ion-col>
+          <ion-item>
+            <ion-skeleton-text animated style="width: 60%; size: 400px"></ion-skeleton-text>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </div>
+
+  <div *ngIf="data">
+    <ion-row>
+      <ion-col style="text-align: center">
+        <h2>Account Details</h2>
+        <ion-badge *ngIf="account.isOnline" color="success"> ONLINE </ion-badge>
+        <ion-badge *ngIf="!account.isOnline" color="medium">
+          OFFLINE
+        </ion-badge>
+        <h4 *ngIf="!account.isOnline">
+          L|O:
+          <span *ngIf="account.lastLogin">{{account.lastLogin}}</span><span *ngIf="!account.lastLogin">N/A</span>
+        </h4>
+
+      </ion-col>
+    </ion-row>
+    <ion-list inset>
+      <ion-row>
+        <ion-col>
+          <h3>
+            <u><b>Basic Details</b></u>:&nbsp;(Click To Edit)
+          </h3>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item><b>Id:&nbsp;</b>{{accountId}}</ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item (click)="changeAccount('role')"><b>Role:&nbsp;</b>
+            <span *ngIf="account.role=='ReportsManager'">Reports Manager</span>
+            <span *ngIf="account.role=='Student'">Student</span>
+            <span *ngIf="account.role=='Admin'">Admin</span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item (click)="changeAccount('title')"><b>Title:&nbsp;</b>{{account.title}}</ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item (click)="changeAccount('firstName')"><b>First Name:&nbsp;</b>{{account.firstName}}</ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item (click)="changeAccount('lastName')"><b>Last Name:&nbsp;</b>{{account.lastName}}</ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item ><b>Email:&nbsp;</b>
+            <ion-button *ngIf="!account.isVerified" fill="outline" (click)="verificationOverideAreYouSure()">Verify Override</ion-button>&nbsp;<b *ngIf="account.isVerified==false" style="color: firebrick" (click)="changeAccount('email')">{{account.email}} (Not Verified)</b>
+            <b *ngIf="account.isVerified==true" style="color: green" (click)="changeAccount('email')">{{account.email}} (Verified)</b>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item><b>Created:&nbsp;</b>{{account.created}}</ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item><b>Last Updated:&nbsp;</b> {{account.updated}}</ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <!-- Incase no reports manager assignent yet-->
+          <ion-item *ngIf="account.role=='Student'"><b>Reports Manager:&nbsp;</b><span *ngIf="reportsManager">
+              <ion-button fill="clear" routerLink="{{currentRoute}}/reports-manager-details/{{reportsManager.id}}">
+                {{reportsManager.firstName}}&nbsp;{{reportsManager.lastName}}&nbsp;<ion-icon name="eye">
+                </ion-icon>
+              </ion-button>
+            </span><span *ngIf="!reportsManager">No Reports Manager</span></ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item *ngIf="!studentReport && account.role=='Student'"><b>Current Expense Report:</b>&nbsp;Not Assigned To A Report Currently</ion-item>
+          <!-- Incase no report assignment yet-->
+          <ion-item *ngIf="account.role=='Student' && studentReport"><b>Current Expense Report:&nbsp;</b>
+            <ion-button fill="clear" routerLink="{{currentRoute}}/current-report-details/{{studentReport.id}}">
+              {{studentReport.reportName}}&nbsp;<ion-icon name="eye">
+              </ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-row>
+          <ion-col>
+            <h3 style="text-align: center">
+              <b><u>Personal Expenses</u></b>:&nbsp;({{studentExpensesCount}})&nbsp;{{totalCurrencyString}}
+            </h3>
+            <ion-button routerLink="{{currentRoute}}/expenses/add" shape="round" fill="outline">
+              <ion-icon name="add-outline"></ion-icon>Add Expense
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-row>
+
+      <div *ngIf="hasExpenses==false">
+        This Account Has No Personal Expenses
+      </div>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="12" size-md="6" *ngFor="let expense of studentExpenses">
+            <ion-card class="speaker-card">
+              <!--<ion-card-header>-->
+              <ion-item detail="false" lines="none" class="speaker-item"
+                routerLink="{{currentRoute}}/expenses/expense-details/{{expense.id}}">
+                <ion-avatar slot="start">
+                  <img src="../../../../assets/img/money.png" [alt]="'Expense Image'" />
+                </ion-avatar>
+                <ion-label>
+                  <h2>{{expense.expenseName}}</h2>
+                  <p><b>${{expense.expenseCost}}</b></p>
+                  <p>{{expense.created}}</p>
+                  <p>{{expense.expenseCategory}}</p>
+                </ion-label>
+              </ion-item>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div *ngIf="(account.role=='ReportsManager')||(account.role=='Admin')">
+        <ion-row>
+          <ion-row>
+            <ion-col>
+              <h3 style="text-align: center">
+                <b><u>Reports Manager Details: (VIEW AS THEM)</u></b>
+              </h3>
+            </ion-col>
+          </ion-row>
+        </ion-row>
+        <ion-row>
+          <ion-button expand="full" shape="block" color="primary" routerLink="{{currentRoute}}/reports">
+            Reports ({{reportsManagerReportsCount}})
+          </ion-button>
+          <ion-button expand="full" shape="block" color="secondary" routerLink="{{currentRoute}}/students">
+            Students ({{reportsManagerStudentsCount}})
+          </ion-button>
+          <ion-button expand="full" shape="block" color="medium" routerLink="{{currentRoute}}/reports-expenses">
+            Expenses ({{reportsManagerExpensesCount}})
+          </ion-button>
+        </ion-row>
+      </div>
+    </ion-list>
+    <ion-row>
+      <ion-col>
+        <ion-button *ngIf="data" shape="block" color="danger" (click)="deleteAreYouSure()">Delete Account</ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+

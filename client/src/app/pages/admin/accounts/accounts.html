@@ -1,0 +1,161 @@
+<ion-content>
+  <ion-header translucent="true">
+    <ion-toolbar>
+      <ion-buttons *ngIf="!showSearchbar" slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+
+      <ion-title *ngIf="!ios && !showSearchbar" text-align-center size="large" color="tertiary"><b>Accounts (Admin)</b>
+      </ion-title>
+      <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText"
+        (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
+      <ion-buttons slot="end">
+        <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="!showSearchbar" (click)="presentFilter()">
+          <span *ngIf="ios">Filter</span>
+          <span *ngIf="!ios">
+            <ion-icon slot="icon-only" name="options"></ion-icon>
+          </span>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar *ngIf="!ios"> </ion-toolbar>
+  </ion-header>
+
+  <ion-content fullscreen="true">
+    <ion-title *ngIf="ios">Student Expenses</ion-title>
+    <ion-header collapse="condense">
+      <ion-toolbar color="secondary">
+        <ion-title text-align-center size="large">Accounts (Admin)</ion-title>
+      </ion-toolbar>
+      <ion-toolbar>
+        <ion-searchbar [(ngModel)]="queryText" placeholder="Search" (ionChange)="updateView()"></ion-searchbar>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-item-divider sticky>
+        <ion-button shape="round" fill="outline" slot="end" routerLink="/admin/accounts/create-account">
+          <ion-icon name="add-outline"></ion-icon>Create Account
+        </ion-button>
+      </ion-item-divider>
+      <ion-content>
+        <!-- Skeleton for when fetching data-->
+        <div *ngIf="!data">
+          <ion-row *ngFor="let dead of deadData">
+            <ion-col size="12" size-md="6">
+              <ion-card class="speaker-card">
+                <!--<ion-card-header>-->
+                <ion-item class="speaker-item">
+                  <ion-avatar slot="start">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-avatar>
+                  <ion-label>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+                  </ion-label>
+                </ion-item>
+              </ion-card>
+            </ion-col>
+            <ion-col>
+              <ion-card class="speaker-card">
+                <!--<ion-card-header>-->
+                <ion-item class="speaker-item">
+                  <ion-avatar slot="start">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-avatar>
+                  <ion-label>
+                    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+                  </ion-label>
+                </ion-item>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </div>
+        <ion-grid fixed *ngIf="data">
+          <ion-row>
+            <ion-col size="12" size-md="6" *ngFor="let account of allAccounts"
+              [hidden]="(account.isOnline==onOffCondition) ||account.role==reportsManagerCondition || account.role==adminCondition || account.role==studentCondition || ((account.firstName.indexOf(queryText)==-1 && account.lastName.indexOf(queryText)==-1 && account.email.indexOf(queryText)==-1)  && queryText)">
+              <ion-card class="speaker-card">
+                <ion-item detail="false" lines="none" class="speaker-item"
+                  routerLink="/admin/accounts/account-details/{{account.id}}">
+                  <ion-label>
+                    <div>
+                      <ion-avatar style="text-align: center">
+                        <img src="../../../../assets/img/avatar.svg" style="text-align: center" />
+                      </ion-avatar>
+                      <h2>{{account.firstName}} {{account.lastName}}</h2>
+                      <ion-badge *ngIf="account.isOnline" color="success">
+                        ONLINE
+                      </ion-badge>
+                      <ion-badge *ngIf="!account.isOnline" color="medium">
+                        OFFLINE
+                      </ion-badge>
+                      <p *ngIf="account.isOnline" style="visibility: hidden;;"> IM ONLINE<span></span></p>
+                      <p *ngIf="!account.isOnline">
+                        L|O:
+                        <span *ngIf="account.lastLogin">{{account.lastLogin}}</span><span
+                          *ngIf="!account.lastLogin">N/A</span>
+                      </p>
+                    </div>
+                  </ion-label>
+                  <ion-label>
+                    <h2 *ngIf="account.role=='ReportsManager'">
+                      Reports Manager
+                    </h2>
+                    <h2 *ngIf="account.role=='Student'">Student</h2>
+                    <h2 *ngIf="account.role=='Admin'">Admin</h2>
+                    <p>
+                      <b>Expenses:&nbsp;( {{account.studentExpensesCount}} )</b>
+                    </p>
+                    <div *ngIf="account.role == 'ReportsManager' || account.role=='Admin'">
+                      <p>
+                        Reports:&nbsp;( {{account.reportsManagerReports.length}} )
+                      </p>
+                      <p>Students: ( {{account.reportsManagerStudentsCount}} )</p>
+                    </div>
+
+                    <div *ngIf="account.role != 'ReportsManager' && account.role!='Admin'">
+                      <p style="visibility: hidden;">
+                        Reports:
+                      </p >
+                      <p style="visibility: hidden;">Students</p>
+                    </div>
+
+                  </ion-label>
+                </ion-item>
+
+                <ion-label style="text-align: left">
+                  <h2>
+                    &nbsp;&nbsp;{{account.email}}&nbsp;<ion-icon *ngIf="account.isVerified==true" style="color: green"
+                      name="checkmark-circle"></ion-icon>
+                    <ion-icon name="checkmark-circle" *ngIf="account.isVerified==false" style="color: firebrick">
+                    </ion-icon>
+                  </h2>
+                  <p>&nbsp;&nbsp;Created:&nbsp;{{account.created}}</p>
+                </ion-label>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </ion-grid>
+      </ion-content>
+    </ion-content>
+  </ion-content>
+</ion-content>

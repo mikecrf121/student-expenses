@@ -1,0 +1,7 @@
+﻿<h1>Verify Email Page</h1>
+
+<div [hidden]="emailStatus == EmailStatus.Verifying">Verifying....</div>
+<div [hidden]="emailStatus == EmailStatus.Failed">
+  Verification failed, you can also verify your account using the
+  <a routerLink="forgot-password">forgot password</a> page.
+</div>

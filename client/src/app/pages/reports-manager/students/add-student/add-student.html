@@ -1,0 +1,81 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+        <ion-back-button defaultHref="/reports-manager/students"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="speaker-background"></div>
+  <ion-title style="color: primary; font-size: 30px; text-align: center">Add Student</ion-title>
+  <p>
+    This will send an invite email to the student, where they are added to this
+    report.
+  </p>
+  <form #AddStudentForm="ngForm" novalidate>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="floating" color="primary">Title</ion-label>
+        <ion-select [(ngModel)]="signup.title" name="title" #title="ngModel" placeholder="(Optional)">
+          <ion-select-option>Mr</ion-select-option>
+          <ion-select-option>Mrs</ion-select-option>
+          <ion-select-option>Miss</ion-select-option>
+          <ion-select-option>Ms</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">First Name</ion-label>
+        <ion-input [(ngModel)]="signup.firstName" name="firstName" type="text" #firstName="ngModel" required
+          placeholder="John">
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="firstName.valid || submitted == false" class="ion-padding-start">
+          First Name is required
+        </p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Last Name</ion-label>
+        <ion-input [(ngModel)]="signup.lastName" name="lastName" type="text" #lastName="ngModel" required
+          placeholder="Doe">
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="lastName.valid || submitted == false" class="ion-padding-start">
+          Last Name is required
+        </p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Email</ion-label>
+        <ion-input [(ngModel)]="signup.email" name="email" type="text" #email="ngModel" required
+          placeholder="(where invite is sent)">
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="email.valid || submitted == false" class="ion-padding-start">
+          Email is required
+        </p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Accept Terms & Conditions</ion-label>
+        <ion-checkbox [(ngModel)]="signup.acceptTerms" name="acceptTerms" #acceptTerms="ngModel" requiredTrue>
+        </ion-checkbox>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="acceptTerms.valid || submitted == false" class="ion-padding-start">
+          Accepting the T&C's is required
+        </p>
+      </ion-text>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button (click)="onAddStudent(AddStudentForm)" type="submit" expand="block">Send Invite Email</ion-button>
+    </div>
+  </form>
+</ion-content>

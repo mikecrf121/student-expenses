@@ -1,0 +1,34 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <div class="ion-padding-top ion-text-center" *ngIf="data">
+      <img src="https://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
+      <h1>{{firstName}} {{lastName}}</h1>
+      <h2>{{email}}</h2>
+      <h3>Member Since: {{created}}</h3>
+
+      <ion-list inset>
+        <ion-row>
+          <ion-col>
+            <ion-button (click)="changePassword()" color="success" shape="block">Change Password</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button (click)="support()" color="secondary" shape="block">Contact Support</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button color="danger" (click)="deleteAccount()" shape="block">Delete Account</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-button (click)="logout()" shape="block">Logout</ion-button>
+      </ion-list>
+    </div>
+  </ion-content>
+</ion-content>

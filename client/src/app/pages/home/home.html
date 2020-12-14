@@ -1,0 +1,69 @@
+<ion-content>
+  <ion-header class="ion-no-border">
+    <ion-toolbar>
+      <ion-title *ngIf="ios">$tudent Expen$e$</ion-title>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="presentPopover($event)">
+          <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="about-header">
+    <!-- Instead of loading an image each time the select changes, use opacity to transition them -->
+    <div class="about-image madison" [ngStyle]="location === 'madison' && {'opacity': '1'}"></div>
+    <div class="about-image austin" [ngStyle]="location === 'austin' && {'opacity': '1'}"></div>
+    <div class="about-image chicago" [ngStyle]="location === 'chicago' && {'opacity': '1'}"></div>
+    <div class="about-image seattle" [ngStyle]="location === 'seattle' && {'opacity': '1'}"></div>
+  </div>
+
+  <div>
+    <h3 class="ion-padding-top ion-padding-start">
+      Welcome To The $tudent Expen$e$ App <span>&#10003;</span>
+    </h3>
+
+    <p class="ion-padding-start ion-padding-end">
+      The Reports Managers create an Expense Report where they add students to
+      that Report , who will then receive an email invite (Currently creates account for them ONLY).
+    </p>
+
+    <p class="ion-padding-start ion-padding-end">
+      Those students add their expenses in their own profile through the app.
+    </p>
+
+    <p class="ion-padding-start ion-padding-end">
+      ***This does not use a typical server smtp service, but instead for
+      development uses a fake email service.
+    </p>
+    <p class="ion-padding-start ion-padding-end">
+      <b><u>Use this to view the emails for adding students, resetting passwords,
+          verifying emails, etc.----<a href="https://ethereal.email/login">Ethereal Email</a></u></b><br />
+      <b>User Name:</b> brannon.fahey@ethereal.email <br />
+      <b>Password:</b> mNXuzdz9gE1Q3KJ6Vw
+    </p>
+
+    <p class="ion-padding-start ion-padding-end">
+      <u><b>Connection String MongoDB Instance, used with MongoDB Compass</b>:</u>
+      <br />
+      mongodb+srv://ql-student-expenses:ql-student-expenses@cluster0.xpl5r.mongodb.net<br />/ql-student-expenses-app?retryWrites=true&w=majority
+    </p>
+    <p class="ion-padding-start ion-padding-end">
+      <b><u>There are 3 User Groups:</u></b><br />
+      <b>1. Admins</b><br />
+      - Create/View/Edit All Accounts<br />
+      + Create/View/Edit Everything for Reports Managers<br />
+      - View/Edit All Reports & Calculate Disbursements<br />
+      - Create/View/Edit All Expenses for Students<br />
+      <b>2. Reports Managers</b><br />
+      - Create/View/Edit Reports & Calculate Disbursements<br />
+      - Add Students To Reports<br />
+      - View/Edit Expenses<br />
+      <b>3. Students</b><br />
+      - Create/View/Edit Personal Expenses
+    </p>
+  </div>
+</ion-content>

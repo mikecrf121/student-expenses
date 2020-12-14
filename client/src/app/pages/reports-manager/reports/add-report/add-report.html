@@ -1,0 +1,35 @@
+<ion-content class="speaker-detail">
+  <ion-header class="ion-no-border">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/Report-manager/properties"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="speaker-background"></div>
+
+  <div class="ion-padding speaker-detail">
+    <p>Easily Add Your Report Here!</p>
+  </div>
+
+  <form #addReportForm="ngForm" novalidate>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label position="floating" style="font-size: larger" color="primary">Report Name</ion-label>
+        <ion-input [(ngModel)]="addReport.reportName" name="reportName" type="text" #reportName="ngModel"
+          placeholder="Report Name" required>
+        </ion-input>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="reportName.valid || submitted == false" class="ion-padding-start">
+          Report Name is required
+        </p>
+      </ion-text>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button (click)="onAddReport(addReportForm)" type="submit" expand="block">Add Report</ion-button>
+    </div>
+  </form>
+</ion-content>

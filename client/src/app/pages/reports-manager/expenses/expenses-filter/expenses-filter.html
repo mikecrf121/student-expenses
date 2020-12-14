@@ -1,0 +1,53 @@
+<ion-content>
+  <ion-header translucent="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button *ngIf="ios" (click)="dismiss()">Cancel</ion-button>
+        <ion-button *ngIf="!ios" (click)="selectAll(false)">Reset</ion-button>
+      </ion-buttons>
+
+      <ion-title> Filter Expenses </ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="applyFilters()" strong>Done</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list [lines]="ios ? 'inset' : 'full'">
+      <ion-list-header>Expense Category</ion-list-header>
+
+      <ion-item>
+        <ion-label>Food&nbsp;</ion-label>
+        <ion-checkbox [(ngModel)]="foodIsChecked"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Hotel&nbsp;</ion-label>
+        <ion-checkbox [(ngModel)]="hotelIsChecked"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Entertainment&nbsp;</ion-label>
+        <ion-checkbox [(ngModel)]="entertainmentIsChecked"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Other&nbsp;</ion-label>
+        <ion-checkbox [(ngModel)]="otherIsChecked"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <ion-footer translucent="true" *ngIf="ios">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="deSelectAll()">Deselect All</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="selectAll()">Select All</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>

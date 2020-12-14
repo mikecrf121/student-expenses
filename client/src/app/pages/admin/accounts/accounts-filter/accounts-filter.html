@@ -1,0 +1,67 @@
+<ion-content>
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button *ngIf="ios" (click)="dismiss()">Cancel</ion-button>
+      <ion-button *ngIf="!ios" (click)="selectAll(false)">Reset</ion-button>
+    </ion-buttons>
+
+    <ion-title> Filter Accounts </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="applyFilters()" strong>Done</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list [lines]="ios ? 'inset' : 'full'">
+    <ion-list-header>Account Types</ion-list-header>
+    <ion-item>
+      <ion-label>Admins&nbsp;</ion-label>
+      <ion-checkbox [(ngModel)]="adminsIsChecked"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Reports Managers&nbsp;</ion-label>
+      <ion-checkbox [(ngModel)]="reportsManagersIsChecked"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Students&nbsp;</ion-label>
+      <ion-checkbox [(ngModel)]="studentsIsChecked"></ion-checkbox>
+    </ion-item>
+
+    <ion-radio-group [(ngModel)]="isOnline" value="{{isOnline}}">
+      <ion-list-header>
+        <ion-label>Online / Offline</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>All</ion-label>
+        <ion-radio slot="start" value="undefined" selected></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Online</ion-label>
+        <ion-radio slot="start" value="true"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Offline</ion-label>
+        <ion-radio slot="start" value="false"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</ion-content>
+
+<ion-footer translucent="true" *ngIf="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="deSelectAll()">Deselect All</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="selectAll()">Select All</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+</ion-content>
+

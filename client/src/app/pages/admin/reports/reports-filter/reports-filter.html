@@ -1,0 +1,46 @@
+<ion-content>
+  <ion-header translucent="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button *ngIf="ios" (click)="dismiss()">Cancel</ion-button>
+        <ion-button *ngIf="!ios" (click)="selectAll(false)">Reset</ion-button>
+      </ion-buttons>
+
+      <ion-title> Filter Reports </ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="applyFilters()" strong>Done</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list [lines]="ios ? 'inset' : 'full'">
+
+      <ion-radio-group [(ngModel)]="isActive" value="{{isActive}}">
+        <ion-list-header>
+          <ion-label>Report Status</ion-label>
+        </ion-list-header>
+
+        <ion-item>
+          <ion-label>All</ion-label>
+          <ion-radio slot="start" value="undefined"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Active</ion-label>
+          <ion-radio slot="start" value="Active" selected></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Archived</ion-label>
+          <ion-radio slot="start" value="Archived"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ion-content>
+
+  <ion-footer translucent="true" *ngIf="ios">
+
+  </ion-footer>
+</ion-content>

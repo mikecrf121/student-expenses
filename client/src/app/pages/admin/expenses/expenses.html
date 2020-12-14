@@ -1,0 +1,118 @@
+<ion-content>
+  <ion-header translucent="true">
+    <ion-toolbar>
+      <ion-buttons *ngIf="!showSearchbar" slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+
+      <ion-title *ngIf="!ios && !showSearchbar" text-align-center size="large" color="tertiary"><b>Expenses (Admin)</b>
+      </ion-title>
+      <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText"
+        (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
+      <ion-buttons slot="end">
+        <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="!showSearchbar" (click)="presentFilter()">
+          <span *ngIf="ios">Filter</span>
+          <span *ngIf="!ios">
+            <ion-icon slot="icon-only" name="options"></ion-icon>
+          </span>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar *ngIf="!ios"> </ion-toolbar>
+  </ion-header>
+
+  <ion-content fullscreen="true">
+    <ion-header collapse="condense">
+      <ion-toolbar color="secondary">
+        <ion-title text-align-center size="large">Expenses (Admin)</ion-title>
+      </ion-toolbar>
+      <ion-toolbar>
+        <ion-searchbar [(ngModel)]="queryText" placeholder="Search" (ionChange)="updateView()"></ion-searchbar>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-item-divider sticky> </ion-item-divider>
+      <ion-content>
+        <!-- Skeleton for when fetching data-->
+        <div *ngIf="!data">
+          <ion-row *ngFor="let dead of deadData">
+            <ion-col size="12" size-md="6">
+              <ion-card class="speaker-card">
+                <!--<ion-card-header>-->
+                <ion-item class="speaker-item">
+                  <ion-avatar slot="start">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-avatar>
+                  <ion-label>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+                  </ion-label>
+                </ion-item>
+              </ion-card>
+            </ion-col>
+            <ion-col>
+              <ion-card class="speaker-card">
+                <!--<ion-card-header>-->
+                <ion-item class="speaker-item">
+                  <ion-avatar slot="start">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-avatar>
+                  <ion-label>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+                  </ion-label>
+                </ion-item>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <ion-grid fixed *ngIf="data">
+          <ion-row>
+            <ion-col size="12" size-md="6" *ngFor="let expense of allExpenses"
+              [hidden]="expense.expenseCategory == foodCondition || expense.expenseCategory == hotelCondition || expense.expenseCategory== entertainmentCondition || expense.expenseCategory == otherCondition || ((expense.expenseName.indexOf(queryText)==-1 && expense.expenseReport[0].reportName.indexOf(queryText)==-1 && expense.expenseStudent[0].firstName.indexOf(queryText)==-1 && expense.expenseStudent[0].lastName.indexOf(queryText)==-1)  && queryText)">
+              <ion-card class="speaker-card">
+                <!--<ion-card-header>-->
+                <ion-item detail="false" lines="none" class="speaker-item"
+                  routerLink="{{currentRoute}}/expense-details/{{expense.id}}">
+                  <ion-avatar slot="start">
+                    <img src="../../../../assets/img/money.png" [alt]="'Expense Image'" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h2><b>{{expense.expenseName}}</b></h2>
+                    <h4><b>${{expense.expenseCost}}</b></h4>
+                    <!-- Incase a user just signs up, they dont have a reports manager-->
+                    <p *ngIf="expense.expenseReport[0]">Report: {{expense.expenseReport[0].reportName}}</p>
+                    <p *ngIf="!expense.expenseReport[0]">Report: None</p>
+                    <p>
+                      Created By: {{expense.expenseStudent[0].firstName}}
+                      {{expense.expenseStudent[0].lastName}}
+                    </p>
+                    <p>{{expense.created}}</p>
+                    <p>{{expense.expenseCategory}}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </ion-grid>
+      </ion-content>
+    </ion-content>
+  </ion-content>
+</ion-content>

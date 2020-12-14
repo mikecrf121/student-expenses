@@ -1,0 +1,113 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="admin/accounts"></ion-back-button>
+      </ion-buttons>
+      <ion-title>(Admin) Create Account</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <form #signupForm="ngForm" novalidate>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label position="floating" color="primary" placeholder="optional">Title (optional)</ion-label>
+          <ion-select [(ngModel)]="signup.title" name="title" #title="ngModel">
+            <ion-select-option>Mr</ion-select-option>
+            <ion-select-option>Mrs</ion-select-option>
+            <ion-select-option>Miss</ion-select-option>
+            <ion-select-option>Ms</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating" color="primary">Role</ion-label>
+          <ion-select [(ngModel)]="signup.role" name="role" #role="ngModel"
+            (ionChange)="loadReportsManagers(signup.role)" required>
+            <ion-select-option value="Admin">Admin</ion-select-option>
+            <ion-select-option value="ReportsManager">Reports Manager</ion-select-option>
+            <ion-select-option value="Student">Student</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger">
+          <p [hidden]="submitted == false || role.valid" class="ion-padding-start">
+            A Role is required
+          </p>
+        </ion-text>
+
+        <ion-item *ngIf="loadReportsManagersListDone==false && signup.role=='Student'">Loading Reports Managers...
+        </ion-item>
+
+        <ion-item *ngIf="loadReportsManagersListDone==true && signup.role=='Student'">
+          <ion-label position="floating" color="primary">Select Reports Manager For Student</ion-label>
+          <ion-select [(ngModel)]="signup.reportsManagerId" name="reportsManagerId" #reportsManagerId="ngModel"
+            type="text" required (ionChange)="loadReportsManagerReports(signup.reportsManagerId)">
+            <ion-select-option *ngFor="let reportsManager of allReportsManagers" value="{{reportsManager.id}}">
+              {{reportsManager.firstName}}
+              {{reportsManager.lastName}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger">
+          <p [hidden]="submitted == false || signup.role!='Student' || signup.reportsManagerId"
+            class="ion-padding-start">
+            A Reports Manager For Student is required
+          </p>
+        </ion-text>
+
+        <ion-item *ngIf="loadReportsManagerReportsListDone==false && signup.reportsManagerId!=undefined">Loading Reports
+          Manager Reports...</ion-item>
+
+        <ion-item *ngIf="loadReportsManagerReportsListDone==true && signup.role=='Student'">
+          <ion-label position="floating" color="primary">Select Report Association</ion-label>
+          <ion-select [(ngModel)]="signup.reportId" name="reportId" #reportId="ngModel" type="text" required>
+            <ion-select-option *ngFor="let report of allReportsManagerReports" value="{{report.id}}">
+              {{report.reportName}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-text color="danger">
+          <p [hidden]="submitted == false || signup.role!='Student' || signup.reportId" class="ion-padding-start">
+            A Report Selection Is Required
+          </p>
+        </ion-text>
+
+        <ion-item>
+          <ion-label position="floating" color="primary">First Name</ion-label>
+          <ion-input [(ngModel)]="signup.firstName" name="firstName" type="text" #firstName="ngModel" required>
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          <p [hidden]="firstName.valid || submitted == false" class="ion-padding-start">
+            First Name is required
+          </p>
+        </ion-text>
+
+        <ion-item>
+          <ion-label position="floating" color="primary">Last Name</ion-label>
+          <ion-input [(ngModel)]="signup.lastName" name="lastName" type="text" #lastName="ngModel" required>
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          <p [hidden]="lastName.valid || submitted == false" class="ion-padding-start">
+            Last Name is required
+          </p>
+        </ion-text>
+
+        <ion-item>
+          <ion-label position="floating" color="primary" value="" placeholder="John@gmail.com">Email</ion-label>
+          <ion-input [(ngModel)]="signup.email" name="email" type="text" #email="ngModel" required>
+          </ion-input>
+        </ion-item>
+        <ion-text color="danger">
+          <p [hidden]="email.valid || submitted == false" class="ion-padding-start">
+            Email is required
+          </p>
+        </ion-text>
+      </ion-list>
+
+      <div class="ion-padding">
+        <ion-button (click)="onSignup(signupForm)" type="submit" expand="block">Create</ion-button>
+      </div>
+    </form>
+  </ion-content>
+</ion-content>
