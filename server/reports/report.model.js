@@ -22,7 +22,7 @@ schema.virtual("reportStudents", {
   justOne: false,
 });
 
-// The Property Manager for the Property
+// The Reports Manager for the Report
 
 schema.virtual("reportsManager", {
   ref: "Account", // The model to use
