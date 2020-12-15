@@ -17,7 +17,7 @@ const connectionOptions = {
   useFindAndModify: false,
 };
 
-// Initialize environment
+// Initialize environment, used later when I gridfs the images
 const app = express();
 const mongoURI =
   "mongodb+srv://ql-student-expenses:ql-student-expenses@cluster0.xpl5r.mongodb.net/ql-student-expenses-app?retryWrites=true&w=majority";
