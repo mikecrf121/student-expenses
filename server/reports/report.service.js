@@ -52,6 +52,7 @@ async function update(id, params) {
 async function _delete(id) {
   //console.log("Im deleting Report...");
   const report = await getReport(id);
+  // should I not await this???
   await report.remove();
 }
 
