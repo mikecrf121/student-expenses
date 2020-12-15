@@ -151,7 +151,7 @@ export class PhotoService {
 
     // delete photo file from filesystem
     const filename = photo.filepath; //.substr(photo.filepath.lastIndexOf('/') + 1);
-    //console.log(filename,"THISSS DOY")
+    //console.log(filename,"File name....")
     await this.deletePictureFromServer(photo.filepath);
     await Filesystem.deleteFile({
       path: filename,
@@ -163,6 +163,7 @@ export class PhotoService {
     this.http.delete<any>(`${baseUrl}/files/${fileName}`).subscribe();
   }
 
+  // cant async already contains a promise
   convertBlobToBase64 = (blob: Blob) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();

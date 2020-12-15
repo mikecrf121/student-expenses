@@ -272,7 +272,7 @@ export class ExpenseDetailsPage {
     const alert = await this.alertCtrl.create({
       header: "Delete expense",
       message:
-        "Are you sure you want to DELETE this expense??  This action can not be reversed.",
+        "Are you sure you want to DELETE this expense??  This action cannot be reversed.",
       buttons: [
         {
           text: "Cancel",

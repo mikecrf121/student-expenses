@@ -138,6 +138,7 @@ export class AccountService {
     return this.http.get<Account[]>(`${baseUrl}/reports-managers-list`);
   }
   //***** For create account page for admins, get all reportsManager Reports
+  // Should probably move this reports servic
   async getAllReportsManagerReports(reportsManagerId: string) {
     return this.http.get<Report[]>(
       `${baseUrl}/${reportsManagerId}/reports-manager-reports`
@@ -158,7 +159,7 @@ export class AccountService {
       `${baseUrl}/${reportsManagerId}/reports-expenses`
     );
   }
-
+  // should probably more this to expense service..
   async getAllExpensesOnAccount(accountId: string) {
     return this.http.get<Expense>(`${baseUrl}/${accountId}/expenses`);
   }

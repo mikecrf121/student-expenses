@@ -24,9 +24,7 @@ export class ReportDetailsPage {
   reportId: string;
   report = { reportName: "" };
   reportExpenses = [];
-  // key value for the edit input
   saving: boolean = true;
-
   savingReport: Promise<HTMLIonLoadingElement>;
   currentRoute: string = this.router.url;
   deleting: Promise<HTMLIonLoadingElement>;
@@ -62,13 +60,13 @@ export class ReportDetailsPage {
   async ionViewDidEnter() {}
 
   async ionViewWillEnter() {
+    this.loading = this.alertService.presentLoading("Student Expenses");
+    (await this.loading).present();
     this.data = false;
     this.calculatingDisbursements = false;
     this.viewingAccount =this.accountService.accountValue;
     // Reset because of weird behavior observed...
     this.totalOfReportExpenses = 0;
-    this.loading = this.alertService.presentLoading("Student Expenses");
-    (await this.loading).present();
     this.accountId = this.accountService.accountValue.id;
     this.reportId = this.route.snapshot.paramMap.get("reportId");
     // get id out of url

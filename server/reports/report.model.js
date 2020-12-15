@@ -22,7 +22,7 @@ schema.virtual("reportStudents", {
   justOne: false,
 });
 
-// The Property Manager for the Property
+// The Reports Manager for the Report
 
 schema.virtual("reportsManager", {
   ref: "Account", // The model to use
@@ -40,14 +40,14 @@ schema.virtual("reportStudentsCount", {
 
 schema.virtual("reportExpenses", {
   ref: "Expense", // The model to use
-  localField: "_id", // Find people where `localField`
+  localField: "_id", // Find expense where `localField`
   foreignField: "reportId", // is equal to `foreignField`
   justOne: false,
 });
 
 schema.virtual("reportExpensesCount", {
   ref: "Expense", // The model to use
-  localField: "_id", // Find people where `localField`
+  localField: "_id", // Find expense where `localField`
   foreignField: "reportId", // is equal to `foreignField`
   count: true,
 });
