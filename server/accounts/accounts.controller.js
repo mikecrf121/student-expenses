@@ -286,11 +286,10 @@ function getAllReportsManagerReports(req, res, next) {
 
 function getById(req, res, next) {
   // Students can get their own account and admins can get any account
-  //console.log(req.params,"????")
-  //console.log(req.Student,"tf")
+  //console.log(req.params,"????");
   /*if (
-    req.params.accountId !== req.Student.accountId &&
-    req.Student.role !== Role.Admin
+    req.params.accountId !== req.user.idd &&
+    req.user.role !== Role.Admin
   ) {
     return res.status(401).json({ message: "Unauthorized" });
   }*/
@@ -334,8 +333,8 @@ function updateSchema(req, res, next) {
     confirmPassword: Joi.string().valid(Joi.ref("password")).empty(""),
   };
 
-  // only admins can update role
-  if (req.Student.role === Role.Admin) {
+  // only admins can update role.... req.user ... not req.student
+  if (req.user.role === Role.Admin) {
     schemaRules.role = Joi.string()
       .valid(Role.Admin, Role.Student, Role.reportsManager)
       .empty("");
@@ -348,7 +347,7 @@ function updateSchema(req, res, next) {
 function update(req, res, next) {
   // Students can update their own account and admins can update any account, THIS IS SO IMPORTANT NOT ACCOUNT ID ITS ID FOR Student.id
   if (req.params.accountId !== req.user.id && req.user.role !== Role.Admin) {
-    return res.status(399).json({
+    return res.status(401).json({
       message: "Unauthorized update to someone else account, your bad",
     });
   }
