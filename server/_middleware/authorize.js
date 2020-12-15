@@ -22,7 +22,7 @@ function authorize(roles = []) {
       const refreshTokens = await db.RefreshToken.find({ account: account.id });
       if (!account || (roles.length && !roles.includes(account.role))) {
         // account no longer exists or role not authorized
-        console.log("why here???");
+        //console.log("why here???");
         return await res
           .status(402)
           .json({ message: "Unauthorized_USER_TRIED_SOMETHING_BAD" });
