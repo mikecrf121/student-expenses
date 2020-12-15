@@ -168,7 +168,7 @@ export class ReportDetailsPage {
     alert.present();
   }
 
-  private async updateReportMasterList(contextParamValue, popUpText) {
+  private async updateReportMasterList(contextParamValue, popUpText:string) {
     (await this.reportService.update(this.reportId, contextParamValue))
       .pipe(first())
       .subscribe({
@@ -272,7 +272,7 @@ export class ReportDetailsPage {
     await alert.present();
   }
 
-  // Calculate Disbursements Per Student
+  // Calculate Disbursements Per Student, TODO, pottentially make this a reusable global funtion?
 
   public async calculateDisbursements() {
     this.calculatingDisbursements = true;
