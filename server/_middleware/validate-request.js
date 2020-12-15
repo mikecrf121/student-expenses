@@ -1,3 +1,4 @@
+// Removed for development
 module.exports = validateRequest;
 
 function validateRequest(req, next, schema) {
