@@ -24,9 +24,7 @@ export class ReportDetailsPage {
   reportId: string;
   report = { reportName: "" };
   reportExpenses = [];
-  // key value for the edit input
   saving: boolean = true;
-
   savingReport: Promise<HTMLIonLoadingElement>;
   currentRoute: string = this.router.url;
   deleting: Promise<HTMLIonLoadingElement>;
