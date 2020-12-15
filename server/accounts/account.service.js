@@ -372,6 +372,7 @@ async function updateExpensesOnAccount(accountId, params) {
   return basicDetails(account);
 }
 
+// Should restrict this to only admins...
 async function _delete(id) {
   const account = await getAccount(id);
   await account.remove();
