@@ -2,7 +2,7 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 const args = process.argv.slice(2);
-const host = args[0] || "http://127.0.0.1:8080";
+const host = args[0] || "http://localhost:8080";
 const indexMatches = [
   ".gz",
   ".map",
