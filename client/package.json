@@ -119,6 +119,6 @@
   "bugs": {
     "url": "https://github.com/mikecrf121/ql-student-expenses-ionic/issues"
   },
-  "homepage": "https://github.com/mikecrf121/ql-student-expenses-ionic#readme",
+  "homepage": "https://github.com/mikecrf121/student-expenses#readme",
   "main": "generate-h2-push.js"
 }
