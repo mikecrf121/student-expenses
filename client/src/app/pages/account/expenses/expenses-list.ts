@@ -47,13 +47,13 @@ export class ExpensesListPage {
   ) {}
 
   async ionViewWillEnter() {
+    this.loading = this.alertService.presentLoading("Student Expenses");
+    (await this.loading).present();
     this.ios = (await this.config.get("mode")) === "ios";
     this.data = false; //<----Used for skeleton
     // Reset because of weird behavior noticed
     this.expensesList=null;
     this.expensesTotal = 0;
-    this.loading = this.alertService.presentLoading("Student Expenses");
-    (await this.loading).present();
     this.foodIsChecked = true;
     this.hotelIsChecked = true;
     this.entertainmentIsChecked = true;

@@ -21,7 +21,7 @@ import { Account } from "@app/_models";
   styleUrls: ["./accounts.scss"],
 })
 export class AccountsPage {
-  // Gets a reference to the list element
+  // Gets a reference to the list element, incase i need later for anything, not implemented currently
   @ViewChild("allAccountsList", { static: true }) allAccountsList: IonList;
 
   ios: boolean;
