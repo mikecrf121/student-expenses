@@ -89,7 +89,7 @@ export class AccountDetailsPage {
             "MMM-DD-YYYY @HH:mm"
           );
         }
-        // Calculate expenses total and format each date
+        // Calculate expenses total and format each date, should use a subscriber here..
         for (let i = 0; i < this.studentExpensesCount; i++) {
           this.totalOfExpenses += Number(this.studentExpenses[i].expenseCost);
           this.studentExpenses[i].created = moment(
