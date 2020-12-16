@@ -59,6 +59,7 @@ export class ReportDetailsPage {
   async ionViewDidEnter() {}
 
   async ionViewWillEnter() {
+    //const startTime = Date.now();
     this.loading = this.alertService.presentLoading("Admin Student Expenses");
     (await this.loading).present();
     this.data = false;
@@ -121,6 +122,7 @@ export class ReportDetailsPage {
           })
           .finally(async () => {
             // Might seem like a smoother transition doing this?
+            //console.log(Date.now()-startTime);
             this.data = true;
             setTimeout(async () => {
               (await this.loading).dismiss();

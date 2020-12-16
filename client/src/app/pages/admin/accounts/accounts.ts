@@ -63,6 +63,7 @@ export class AccountsPage {
   async ionViewDidEnter() {}
 
   async ionViewWillEnter() {
+    //const startTime = Date.now();
     // This is faster I think? but using the later to visualize data.
     // but maybe not since the service already pipes it
     /* (await this.accountService.getAll())
@@ -103,6 +104,7 @@ export class AccountsPage {
       })
       .finally(async () => {
         // Might seem like a smoother transition doing this?
+        //console.log(Date.now()-startTime);
         this.data = true;
         setTimeout(async () => {
           (await this.loading).dismiss();
