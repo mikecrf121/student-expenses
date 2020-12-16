@@ -87,6 +87,7 @@ export class AccountsPage {
           //console.log(this.allAccounts, "right here");
         });
       })
+      // Can combine the above with this...
       .then(async () => {
         const accountsCount = this.allAccounts.length;
         for (let i = 0; i < accountsCount; i++) {
