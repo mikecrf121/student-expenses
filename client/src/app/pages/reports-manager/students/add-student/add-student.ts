@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { first } from "rxjs/operators";
-import { UserData } from "@app/_providers/user-data";
 import { Location } from "@angular/common";
 
 import { UserOptions } from "@app/_interfaces";
@@ -41,7 +40,6 @@ export class AddStudentPage {
     public route: ActivatedRoute,
     public alertService: AlertService,
     public accountService: AccountService,
-    private userData: UserData,
     private reportService: ReportService,
     private _location: Location,
     private router: Router
@@ -94,16 +92,12 @@ export class AddStudentPage {
 
     (await this.accountService.register(form.value)).pipe(first()).subscribe({
       next: async () => {
-        //TODO Replace with toast alert
         await this.alertService
           .createToastAlert(
             "Invite Email To Student Sent Successfully",
             "success",
             5000
           )
-          .then(async () => {
-            await this.userData.signup(this.signup.email);
-          })
           .finally(async () => {
             this._location.back();
             (await this.addingStudent).dismiss();

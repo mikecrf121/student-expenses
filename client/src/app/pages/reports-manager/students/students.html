@@ -25,6 +25,11 @@
     </ion-toolbar>
     <ion-toolbar *ngIf="!ios"> </ion-toolbar>
   </ion-header>
+  <ion-item-divider sticky>
+    <ion-button routerLink="{{currentRoute}}/add" shape="round" fill="outline" slot="end">
+      <ion-icon name="add-outline"></ion-icon>Create New Student
+    </ion-button>
+  </ion-item-divider>
 
   <ion-content fullscreen="true">
     <ion-header collapse="condense">

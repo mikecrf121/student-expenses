@@ -5,6 +5,7 @@ const schema = new Schema(
   {
     email: { type: String, unique: true, required: true },
     reportsManagerId: { type: String, required: false },
+    personalReportsListId: { type: String, required: false }, // So Account can be associated with more than one Report
     reportId: { type: String, required: false },
     passwordHash: { type: String, required: true },
     title: { type: String, required: true },
