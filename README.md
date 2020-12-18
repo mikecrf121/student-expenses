@@ -15,7 +15,7 @@ App is essentially, or going to be a full blown Expense Report's app, with the l
 If you do decide to fork, please update the mongoDB connection string in the server/config.
 You can point to a local instance or any other instance, first account created is always an Admin.
 
-This apps is still in early development.
+This app is still in early development.  Master branch will be the most stable version, later branches are for developing experimental features.  
 
 ## <u>Table Of Contents</u>:
 1. <a href="#for-ql-student-expenses-runners">Instructions for Running</a>
