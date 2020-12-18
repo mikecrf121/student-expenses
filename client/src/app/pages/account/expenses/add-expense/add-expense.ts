@@ -86,8 +86,8 @@ export class AddExpensePage {
       return;
     }
     form.value.reportsManagerId = this.acctFetched.reportsManagerId;
-    console.log(form.value,"the form value???");
-
+    form.value.studentId = this.acctFetched.id;
+    console.log(form.value);
     (await this.expenseService.create(form.value)).pipe(first()).subscribe({
       next: async () => {
         setTimeout(async () => {
