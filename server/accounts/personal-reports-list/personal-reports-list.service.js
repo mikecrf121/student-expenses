@@ -8,9 +8,9 @@ module.exports = {
 };
 
 async function getByStudentId(studentId) {
-    const personalReportsList = await getpersonalReportsList(studentId);
-    return basicDetails(personalReportsList);
-  }
+  const personalReportsList = await getpersonalReportsList(studentId);
+  return basicDetails(personalReportsList);
+}
 
 async function createPersonalReportsList(params) {
   const personalReportsList = new db.personalReportsList(params);
@@ -19,10 +19,10 @@ async function createPersonalReportsList(params) {
 }
 
 async function updatePersonalReportsList(params) {
-  console.log("getting to update prl")
-  const personalReportsList = await db.PersonalReportsList.findOne({accountId:params.accountId});
-  console.log("able to find the persoanl reportsList???");
-  await personalReportsList.reports.push({reportId:params.reportId});
+  const personalReportsList = await db.PersonalReportsList.findOne({
+    accountId: params.accountId,
+  });
+  await personalReportsList.reports.push({ reportId: params.reportId });
 
   personalReportsList.updated = Date.now();
   await personalReportsList.save();
@@ -36,24 +36,14 @@ async function _delete(id) {
   await personalReportsList.remove();
 }
 
-async function getPersonalReportsList(id){
-
-
-};
-
+async function getPersonalReportsList(id) {}
 
 function basicDetails(personalReportsList) {
-  const {
-    id,
-    reports,
-    created,
-    updated
-  } = personalReportsList;
+  const { id, reports, created, updated } = personalReportsList;
   return {
     id,
     reports,
     created,
-    updated
+    updated,
   };
-
 }

@@ -43,7 +43,6 @@ function createReportStudentsList(req, res, next) {
 }
 
 function updateReportStudentsList(req, res, next) {
-  console.log(req.params,"what is this???");
   reportStudentsListService
     .updateReportStudentsList(req.params)
     .then((reportStudentsList) => res.json(reportStudentsList))

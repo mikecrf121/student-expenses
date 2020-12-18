@@ -54,7 +54,6 @@ function createPersonalReportsList(req, res, next) {
 
 // when adding to a personal reports list...
 function updatePersonalReportsList(req, res, next) {
-  console.log(req.params,"the params");
   persoanlReportsListService
     .updatePersonalReportsList(req.params)
     .then((PersonalReportsList) => res.json(PersonalReportsList))
