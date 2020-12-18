@@ -17,7 +17,7 @@ schema.virtual("parentReport", {
   ref: "Report", // The model to use
   localField: "_id", // Find people where `localField`
   foreignField: "reportStudentsListId", // is equal to `foreignField`
-  justOne: false,
+  justOne: true,
 });
 // Might rename later, as it might not just be "Students" on the list
 module.exports = mongoose.model("ReportStudentsList", schema);

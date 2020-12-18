@@ -95,7 +95,7 @@ export class AddStudentPage {
     // Sunscribing to the accountFinder for when its done....
     accountFinder.subscribe(async (res) => {
       const account = res; // <--- Just so its easier to work with
-      console.log(account, "The account??");
+      //console.log(account, "The account??");
       // ___________If No Account found...___________If Account Found...
       res == null ? this.workFlow1(form) : this.workFlow2(account);
     });
@@ -118,6 +118,7 @@ export class AddStudentPage {
 
   async workFlow2(account) {
     // Check if already asigned to another reports manager
+    // TODO Check if student alread exists on current reports student list...
     // Yes, Alert already asigned to another reports manager
     if (account.reportsManagerId != this.reportsManagerId) {
       (await this.addingStudent).dismiss();

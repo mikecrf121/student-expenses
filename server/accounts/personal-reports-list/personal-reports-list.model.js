@@ -17,7 +17,7 @@ schema.virtual("parentAccount", {
   ref: "Account", // The model to use
   localField: "_id", // Find people where `localField`
   foreignField: "personalReportsListId", // is equal to `foreignField`
-  justOne: false,
+  justOne: true,
 });
 
 module.exports = mongoose.model("PersonalReportsList", schema);
