@@ -9,7 +9,7 @@ const reportService = require("../reports/report.service");
 const expenseService = require("../expenses/expense.service");
 
 // routes for accounts services like login authenticate etc.
-router.post("/authenticate", authenticateSchema, authenticate);
+router.post("/authenticate",authenticateSchema, authenticate);
 router.post("/register", registerSchema, register);
 router.post("/verify-email", verifyEmailSchema, verifyEmail);
 router.post("/forgot-password", forgotPasswordSchema, forgotPassword);

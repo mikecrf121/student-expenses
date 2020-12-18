@@ -41,7 +41,7 @@ async function authenticate({ email, password, ipAddress }) {
     !account.isVerified ||
     !bcrypt.compareSync(password, account.passwordHash)
   ) {
-    //console.log("So whats wrong???")
+    console.log("So whats wrong???")
     throw "Email or password is incorrect";
   }
   //TODO
@@ -310,7 +310,8 @@ async function getById(id) {
     .populate("reportsManagerExpenses")
     .populate("reportsManagerStudents")
     .populate("reportsManagerExpensesCount")
-    .populate("reportsManagerStudentsCount");
+    .populate("reportsManagerStudentsCount")
+    .populate("personalReportsList");
 
   return basicDetails(account);
 }
@@ -490,6 +491,8 @@ function basicDetails(account) {
     reportsManagerExpensesCount,
     reportsManagerStudentsCount,
     expensesTotal,
+    personalReportsListId,
+    personalReportsList
   } = account;
   return {
     id,
@@ -518,6 +521,8 @@ function basicDetails(account) {
     reportsManagerExpensesCount,
     reportsManagerStudentsCount,
     expensesTotal,
+    personalReportsListId,
+    personalReportsList
   };
 }
 

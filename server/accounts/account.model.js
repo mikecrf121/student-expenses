@@ -36,6 +36,13 @@ schema.virtual("isVerified").get(function () {
   return !!(this.verified || this.passwordReset);
 });
 
+schema.virtual("personalReportsList", {
+  ref: "PersonalReportsList", // The model to use
+  localField: "_id", // Find people where `localField`
+  foreignField: "accountId", // is equal to `foreignField`
+  justOne: true,
+});
+
 // My Expenses as a Expense Owner
 schema.virtual("studentExpenses", {
   ref: "Expense", // The model to use

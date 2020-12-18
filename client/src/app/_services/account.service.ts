@@ -187,15 +187,19 @@ export class AccountService {
     );
   }
 
-  async updatePersonalReportsList(accountId: string, reportId:string, params?: any) {
-    console.log(params)
+  async updatePersonalReportsList(
+    accountId: string,
+    reportId: string,
+    params?: any
+  ) {
+    //console.log(params)
     return this.http
-    .put(`${baseUrl}/personal-reports-list/${accountId}/${reportId}`, params)
-    .pipe(
-      map(async (personalReportsList: any) => {
-        return personalReportsList;
-      })
-    );
+      .put(`${baseUrl}/personal-reports-list/${accountId}/${reportId}`, params)
+      .pipe(
+        map(async (personalReportsList: any) => {
+          return personalReportsList;
+        })
+      );
   }
 
   async delete(id: string) {

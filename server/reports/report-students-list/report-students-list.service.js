@@ -2,6 +2,7 @@ const db = require("../../_helpers/db");
 
 module.exports = {
   getByReportId,
+  onReportStudentsListChecker,
   createReportStudentsList,
   updateReportStudentsList,
   delete: _delete,
@@ -10,6 +11,25 @@ module.exports = {
 async function getByReportId(reportId) {
   const reportStudentsList = await getreportStudentsList(reportId);
   return basicDetails(reportStudentsList);
+}
+
+// return true or false...
+async function onReportStudentsListChecker(params) {
+  const reportStudentsList = await db.ReportStudentsList.findOne({
+    reportId: params.reportId,
+  });
+
+  const reportStudentsListArray = await reportStudentsList.students;
+
+  if (
+    reportStudentsListArray.some(
+      (student) => student.accountId == params.accountId
+    )
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 async function createReportStudentsList(params) {

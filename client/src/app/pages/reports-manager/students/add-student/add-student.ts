@@ -7,7 +7,6 @@ import { Location } from "@angular/common";
 import { UserOptions } from "@app/_interfaces";
 import { AccountService, AlertService, ReportService } from "@app/_services";
 import { Account } from "@app/_models";
-import { async, onErrorResumeNext } from "rxjs";
 
 @Component({
   selector: "page-add-student",
@@ -57,6 +56,7 @@ export class AddStudentPage {
         "/" + "reports-manager/reports/report-details/students/add"
       );
     }
+    // No reportId in url for non admins
     this.reportId = this.route.snapshot.paramMap.get("reportId");
     // get report, then the reportManagerId
     if (this.reportId != null) {
@@ -80,7 +80,7 @@ export class AddStudentPage {
 
   //async ionViewDidEnter() {}
 
-  // Big Function For This Page
+  // Big Function For This Page, FOR SURE A MORE ELEGANT WAY OF DOING THIS>>>>>>>!!!!!
   async onAddStudent(form?: NgForm) {
     this.addingStudent = this.alertService.presentLoading("Adding Student;");
     (await this.addingStudent).present();
@@ -89,72 +89,95 @@ export class AddStudentPage {
       (await this.addingStudent).dismiss();
       return;
     }
-    const accountFinder = await this.accountService.getByEmail(
+    // Checking if Account Already Exists
+    const accountFinder$ = await this.accountService.getByEmail(
       form.value.email
     );
+
     // Sunscribing to the accountFinder for when its done....
-    accountFinder.subscribe(async (res) => {
+    accountFinder$.subscribe(async (res) => {
       const account = res; // <--- Just so its easier to work with
-      //console.log(account, "The account??");
-      // ___________If No Account found...___________If Account Found...
-      res == null ? this.workFlow1(form) : this.workFlow2(account);
+      // ______________If No Account found..._____If Account Found...
+      account == null ? this.workFlow1(form) : this.workFlow2(account);
     });
   }
 
-  async workFlow1(form) {
+  // No account so.. creating one for them
+  async workFlow1(form?: NgForm) {
     // Create new account and send invite email
-    await this.createNewStudentAccount(form)
-      .finally(async () => {
-        this.alertService.createToastAlert(
-          "Student Account Created Successfully.. Resuming...",
-          "success",
-          5000
-        );
-        (await this.addingStudent).dismiss();
-        // re initiating the function....
-        this.onAddStudent(form);
-      });
+    await this.createNewStudentAccount(form).finally(async () => {
+      this.alertService.createToastAlert(
+        "Student Account Created Successfully.. Resuming...",
+        "success",
+        15000
+      );
+      (await this.addingStudent).dismiss();
+      // re initiating the function....
+      this.onAddStudent(form);
+    });
   }
 
-  async workFlow2(account) {
+  async workFlow2(account: Account) {
     // Check if already asigned to another reports manager
-    // TODO Check if student alread exists on current Report Students list...
+    // Check if student alread exists on current Report Students list...
     // Yes, Alert already asigned to another reports manager
     if (account.reportsManagerId != this.reportsManagerId) {
       (await this.addingStudent).dismiss();
       this.alertService.createToastAlert(
         "Student Already Assigned To Another Reports Manager!",
         "danger",
-        5000
+        15000
       );
     } else {
       // Add student to report students list
-      if (this.reportId != null) {
-        await this.addStudentToReportStudentsList(this.reportId, account.id)
-          .then(async () => {
-            // Add Report To students personal reports list
-            await this.addReportToAccountsPersonalReportsList(
-              account.id,
-              this.reportId
-            );
-          })
-          .finally(async () => {
-            this.alertService.createToastAlert(
-              "Student Added To Report Successfully!",
-              "success",
-              5000
-            );
+      if (this.reportId) {
+        // Check if already on this report then return...
+        const onListAlready$ = await this.reportService.getOnReportStudentsListChecker(
+          this.reportId,
+          account.id
+        );
+        onListAlready$.subscribe(async (res) => {
+          //console.log(res)
+          if (res==true) {
             (await this.addingStudent).dismiss();
-          });
+            this.alertService.createToastAlert(
+              "Student Already Assigned To This Report!",
+              "danger",
+              15000
+            );
+            return;
+          } else {
+            await this.continueJob(account);
+          }
+        });
       } else {
         (await this.addingStudent).dismiss();
         this.alertService.createToastAlert(
-          "Done!",
+          "Student Added Succefully!",
           "success",
-          5000
+          15000
         );
       }
     }
+  }
+
+  async continueJob(account: any) {
+    await this.addStudentToReportStudentsList(this.reportId, account.id)
+      .then(async () => {
+        // Add Report To students personal reports list
+        await this.addReportToAccountsPersonalReportsList(
+          account.id,
+          this.reportId
+        );
+      })
+      .finally(async () => {
+        this.alertService.createToastAlert(
+          "Student Added To Report Successfully!",
+          "success",
+          15000
+        );
+        (await this.addingStudent).dismiss();
+      });
   }
 
   // If No Account already exists, create new account for student and will send invite email
@@ -171,7 +194,7 @@ export class AddStudentPage {
     if (!form.value.title) {
       form.value.title = "N/A";
     }
-    // If no account exists Do This...
+    // If no account exists, Do This...
     (await this.accountService.register(form.value)).pipe(first()).subscribe({
       next: async () => {
         await this.alertService

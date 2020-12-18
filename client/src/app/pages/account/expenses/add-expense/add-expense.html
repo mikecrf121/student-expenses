@@ -39,6 +39,14 @@
         </ion-select>
       </ion-item>
 
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Expense Report</ion-label>
+        <ion-select [(ngModel)]="addExpense.reportId" name="reportId" #reportId="ngModel">
+          <ion-select-option  *ngFor="let report of personalReportsList" value="{{report.reportId}}">{{report.reportName}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
       <ion-item>
         <ion-label position="floating" color="primary">Expense Cost</ion-label>
         <ion-input [(ngModel)]="addExpense.expenseCost" name="expenseCost" type="text" #expenseCost="ngModel" required

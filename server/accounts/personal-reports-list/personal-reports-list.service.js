@@ -22,7 +22,9 @@ async function updatePersonalReportsList(params) {
   const personalReportsList = await db.PersonalReportsList.findOne({
     accountId: params.accountId,
   });
-  await personalReportsList.reports.push({ reportId: params.reportId });
+  const report = await db.Report.findOne({_id:params.reportId});
+  // So I can have the report name for when the student selects it when adding expenses.. TODO trim
+  await personalReportsList.reports.push({ reportId: params.reportId, reportName:report.reportName });
 
   personalReportsList.updated = Date.now();
   await personalReportsList.save();

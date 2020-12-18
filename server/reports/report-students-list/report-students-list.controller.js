@@ -13,6 +13,12 @@ router.get(
   authorize(Role.Admin, Role.RepotsManager),
   getByReportId
 );
+// Check if Account on this reports' student list
+router.get(
+  "/:reportId/:accountId/check-if-on",
+  authorize(Role.Admin, Role.RepotsManager),
+  onReportStudentsListChecker
+);
 // Whenever a RM creates a report, this should be created concurently
 router.post(
   "/",
@@ -20,7 +26,11 @@ router.post(
   createReportStudentsList
 );
 // Whenever students are added or deleted from a report
-router.put("/:reportId/:accountId", authorize(Role.Admin, Role.RepotsManager), updateReportStudentsList);
+router.put(
+  "/:reportId/:accountId",
+  authorize(Role.Admin, Role.RepotsManager),
+  updateReportStudentsList
+);
 // If the Report for whatever reason is deleted/Archived, this will go for the ride
 router.delete("/:reportId", authorize(), _delete);
 
@@ -33,6 +43,16 @@ function getByReportId(req, res, next) {
       reportStudentsList ? res.json(reportStudentsList) : res.sendStatus(404)
     )
     .catch(next);
+}
+
+// Checker if the account is already on the report students list
+function onReportStudentsListChecker(req, res, next) {
+  reportStudentsListService
+  .onReportStudentsListChecker(req.params)
+  .then((onReportStudentsList) =>
+    onReportStudentsList ? res.json(true) : res.json(false)
+  )
+  .catch(next);
 }
 
 function createReportStudentsList(req, res, next) {
