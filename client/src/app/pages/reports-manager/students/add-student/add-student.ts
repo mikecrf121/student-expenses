@@ -118,7 +118,7 @@ export class AddStudentPage {
 
   async workFlow2(account) {
     // Check if already asigned to another reports manager
-    // TODO Check if student alread exists on current reports student list...
+    // TODO Check if student alread exists on current Report Students list...
     // Yes, Alert already asigned to another reports manager
     if (account.reportsManagerId != this.reportsManagerId) {
       (await this.addingStudent).dismiss();
