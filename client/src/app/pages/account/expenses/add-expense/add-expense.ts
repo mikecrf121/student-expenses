@@ -29,6 +29,7 @@ export class AddExpensePage {
   savingExpense: Promise<HTMLIonLoadingElement>;
   accountId: string;
   personalReportsList: any;
+  acctFetched: Account;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,7 +54,7 @@ export class AddExpensePage {
     await (await this.accountService.getById(acctId))
       .forEach(async (Element) => {
         // Replace this with their personal reports list....
-        console.log(Element);
+        this.acctFetched = Element;
         this.personalReportsList = Element.personalReportsList.reports;
       })
       .finally(() => {
@@ -84,7 +85,7 @@ export class AddExpensePage {
       }, 300);
       return;
     }
-
+    form.value.reportsManagerId = this.acctFetched.reportsManagerId;
     console.log(form.value,"the form value???");
 
     (await this.expenseService.create(form.value)).pipe(first()).subscribe({
