@@ -1,4 +1,4 @@
-const db = require("_helpers/db");
+const db = require("../../_helpers/db");
 
 module.exports = {
   getByStudentId,
@@ -18,11 +18,11 @@ async function createPersonalReportsList(params) {
   return basicDetails(personalReportsList);
 }
 
-async function updatePersonalReportsList(id, params) {
-  const personalReportsList = await getPersonalReportsList(id);
-
-
-  Object.assign(personalReportsList, params);
+async function updatePersonalReportsList(params) {
+  console.log("getting to update prl")
+  const personalReportsList = await db.PersonalReportsList.findOne({accountId:params.accountId});
+  console.log("able to find the persoanl reportsList???");
+  await personalReportsList.reports.push({reportId:params.reportId});
 
   personalReportsList.updated = Date.now();
   await personalReportsList.save();

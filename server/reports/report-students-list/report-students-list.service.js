@@ -1,4 +1,4 @@
-const db = require("_helpers/db");
+const db = require("../../_helpers/db");
 
 module.exports = {
   getByReportId,
@@ -13,15 +13,20 @@ async function getByReportId(reportId) {
   }
 
 async function createReportStudentsList(params) {
-  const reportStudentsList = new db.reportStudentsList(params);
+  const reportStudentsList = new db.ReportStudentsList(params);
   await reportStudentsList.save();
   return basicDetails(reportStudentsList);
 }
 
-async function updateReportStudentsList(id, params) {
-  const reportStudentsList = await getReportStudentsList(id);
+// ergo adding to this.....
+async function updateReportStudentsList(params) {
+  console.log(params.reportId,"what is the params??");
+  const reportStudentsList = await db.ReportStudentsList.findOne({reportId: params.reportId}); 
+  
+  //({reportId:'5fcb41679863e5b01287e39d'});
 
-  Object.assign(reportStudentsList, params);
+  console.log(reportStudentsList,'able to find the report students list???')
+  await reportStudentsList.students.push({accountId:params.accountId});
 
   reportStudentsList.updated = Date.now();
   await reportStudentsList.save();
@@ -35,7 +40,7 @@ async function _delete(id) {
   await reportStudentsList.remove();
 }
 
-async function getReportStudentsList(id){
+async function getReportStudentsList(params){
 
 
 };
@@ -44,12 +49,14 @@ async function getReportStudentsList(id){
 function basicDetails(reportStudentsList) {
   const {
     id,
+    reportId,
     students,
     created,
     updated
   } = reportStudentsList;
   return {
     id,
+    reportId,
     students,
     created,
     updated

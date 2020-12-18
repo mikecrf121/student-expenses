@@ -20,7 +20,7 @@ router.post(
   createReportStudentsList
 );
 // Whenever students are added or deleted from a report
-router.put("/:reportId", authorize(), updateReportStudentsList);
+router.put("/:reportId/:accountId", authorize(Role.Admin, Role.RepotsManager), updateReportStudentsList);
 // If the Report for whatever reason is deleted/Archived, this will go for the ride
 router.delete("/:reportId", authorize(), _delete);
 
@@ -43,8 +43,9 @@ function createReportStudentsList(req, res, next) {
 }
 
 function updateReportStudentsList(req, res, next) {
+  console.log(req.params,"what is this???");
   reportStudentsListService
-    .updateReportStudentsList(req.params.reportId, req.body)
+    .updateReportStudentsList(req.params)
     .then((reportStudentsList) => res.json(reportStudentsList))
     .catch(next);
 }

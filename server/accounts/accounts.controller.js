@@ -38,6 +38,7 @@ router.get(
 );
 //
 router.get("/:accountId", authorize(), getById);
+router.get("/:accountEmail/by-email", authorize(), getByEmail);
 router.get("/:reportId/report-students", authorize(), getAllStudentsByReportId);
 router.post("/", createSchema, createAccount);
 router.put("/:accountId", authorize(), update);
@@ -282,6 +283,16 @@ function getAllReportsManagerReports(req, res, next) {
     .getAllReportsManagerReports(req.params.reportsManagerId)
     .then((reports) => res.json(reports))
     .catch(next);
+}
+
+// Checker to see if account already exists....
+function getByEmail(req, res, next){
+  //console.log(req.user);
+  accountService
+    .getByEmail(req.params.accountEmail)
+    .then((account) => (account ? res.json(account) : res.json(null)))
+    .catch(next);
+
 }
 
 function getById(req, res, next) {

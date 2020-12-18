@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema(
   {
+    accountId: { type: String, required: true}, // The Account beholders
     reports: { type: Array, required: false },
     created: { type: Date, default: Date.now },
     updated: Date,

@@ -6,6 +6,7 @@ import { map, finalize, catchError } from "rxjs/operators";
 
 import { environment } from "@environments/environment";
 import { Account, Expense, Report } from "@app/_models";
+import { AccountsPage } from "@app/pages/admin/accounts/accounts";
 
 const baseUrl = `${environment.apiUrl}/accounts`;
 
@@ -124,6 +125,10 @@ export class AccountService {
     return this.http.get<Account>(`${baseUrl}/${accountId}`);
   }
 
+  async getByEmail(accountEmail: string) {
+    return this.http.get<Account>(`${baseUrl}/${accountEmail}/by-email`);
+  }
+
   async getAllStudents(reportsManagerId: string) {
     return this.http.get<Account>(`${baseUrl}/${reportsManagerId}/students`);
   }
@@ -178,6 +183,17 @@ export class AccountService {
           this.accountSubject.next(account);
         }
         return account;
+      })
+    );
+  }
+
+  async updatePersonalReportsList(accountId: string, reportId:string, params?: any) {
+    console.log(params)
+    return this.http
+    .put(`${baseUrl}/personal-reports-list/${accountId}/${reportId}`, params)
+    .pipe(
+      map(async (personalReportsList: any) => {
+        return personalReportsList;
       })
     );
   }

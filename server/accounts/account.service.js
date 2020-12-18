@@ -18,6 +18,7 @@ module.exports = {
   resetPassword,
   getAll,
   getById,
+  getByEmail,
   createAccount,
   update,
   delete: _delete,
@@ -112,15 +113,12 @@ async function revokeToken({ token, ipAddress }) {
 
 async function register(params, origin) {
   // validate
-  //console.log(params,"here")
   if (await db.Account.findOne({ email: params.email })) {
     // send already registered error in email to prevent account enumeration
     return await sendAlreadyRegisteredEmail(params.email, origin);
   }
-  //console.log("Getting here???")
   // createAccount account object
   const account = new db.Account(params);
-
   // first registered account is an admin
   const isFirstAccount = (await db.Account.countDocuments({})) === 0;
   account.role = isFirstAccount
@@ -131,13 +129,16 @@ async function register(params, origin) {
     ? Role.Admin
     : Role.Student;
   account.verificationToken = randomTokenString();
-
   // hash password
   account.passwordHash = hash(params.password);
-
   // save account
   await account.save();
-
+  // create personal reports list 
+  const newPersonalReportsList = new db.PersonalReportsList({
+    accountId: account.id,
+  });
+  //console.log(newPersonalReportsList, "???");
+  await newPersonalReportsList.save();
   // send email
   await sendVerificationEmail(account, origin);
 }
@@ -290,6 +291,15 @@ async function getReportsExpenses(reportsManagerId) {
   return resultsArray;
 }
 
+// used to check if account exists...
+async function getByEmail(accountEmail) {
+  const account = await db.Account.findOne({ email: accountEmail });
+  if (account) {
+    return basicDetails(account);
+  }
+  return null;
+}
+
 async function getById(id) {
   const account = await db.Account.findById(id)
     .populate("studentExpenses")
@@ -305,20 +315,25 @@ async function getById(id) {
   return basicDetails(account);
 }
 
+// Simultaniously create a personal reports list
 async function createAccount(params) {
   // validate
   if (await db.Account.findOne({ email: params.email })) {
     throw 'Email "' + params.email + '" is already registered';
   }
-
   const account = new db.Account(params);
   account.verified = Date.now();
-
   // hash password
   account.passwordHash = hash(params.password);
-
   // save account
   await account.save();
+  //console.log(account,"???what is this account???")
+  // Create A New Personal Reports List Simultaniously
+  const newPersonalReportsList = new db.PersonalReportsList({
+    accountId: account.id,
+  });
+  //console.log(newPersonalReportsList, "???");
+  await newPersonalReportsList.save();
 
   return basicDetails(account);
 }
@@ -378,14 +393,14 @@ async function _delete(id) {
   await account.remove();
 }
 
-// This maybe should be moved???
+// This maybe should be moved??? Im not currently utilizing this...
 async function updateReportsOnAccount(accountId, params) {
   const report = await new db.Report(params);
   report.updated = Date.now();
   await report.save();
   const account = await getAccount(accountId);
 
-  await account.reports.push(Report);
+  await account.reports.push(report);
   account.updated = Date.now();
   await account.save();
   return basicDetails(account);
@@ -461,7 +476,7 @@ function basicDetails(account) {
     updated,
     isVerified,
     lastLogin,
-    verificationToken,//<--- IDK if this is a good idea
+    verificationToken, //<--- IDK if this is a good idea
     isOnline,
     status,
     studentExpenses,
@@ -488,7 +503,7 @@ function basicDetails(account) {
     created,
     updated,
     isVerified,
-    verificationToken,//<--- IDK if this is a good idea
+    verificationToken, //<--- IDK if this is a good idea
     lastLogin,
     isOnline,
     status,

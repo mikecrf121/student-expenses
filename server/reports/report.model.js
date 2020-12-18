@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const schema = new Schema(
   {
     reportsManagerId: { type: String, required: true },
-    reportStudentsListId: { type: String, required: true }, // starting so students can have multiple reports
+    reportStudentsListId: { type: String, required: false }, // starting so students can have multiple reports
     reportName: { type: String, required: false },
     status: {
       code: { type: String, required: true, default: "Active" },

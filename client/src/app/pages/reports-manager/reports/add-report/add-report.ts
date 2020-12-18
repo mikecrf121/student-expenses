@@ -79,7 +79,6 @@ export class AddReportPage {
           "success",
           8000
         );
-        const backUrl = this.currentRoute.replace("/add", "");
         this._location.back();
       },
       error: async (error) => {

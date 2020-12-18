@@ -1,6 +1,5 @@
 ///// NEED TODO THIS
 
-
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
@@ -12,51 +11,61 @@ const persoanlReportsListService = require("./personal-reports-list.service");
 // routes
 // Used to load the Report Details view potentially
 router.get(
-  "/:reportId",
+  "/:accountId",
   authorize(Role.Admin, Role.RepotsManager),
-  getByReportId
+  getByAccountId
 );
 // Whenever a RM creates a report, this should be created concurently
 router.post(
   "/",
   authorize(Role.Admin, Role.RepotsManager),
-  createReportStudentsList
+  createPersonalReportsList
 );
 // Whenever students are added or deleted from a report
-router.put("/:reportId", authorize(), updateReportStudentsList);
+router.put(
+  "/:accountId/:reportId",
+  authorize(Role.Admin, Role.RepotsManager),
+  updatePersonalReportsList
+);
 // If the Report for whatever reason is deleted/Archived, this will go for the ride
-router.delete("/:reportId", authorize(), _delete);
+router.delete(
+  "/:accountId",
+  authorize(Role.Admin, Role.ReportsManager),
+  _delete
+);
 
 module.exports = router;
 
-function getByReportId(req, res, next) {
-  reportStudentsListService
-    .getByReportId(req.params.reportId)
-    .then((reportStudentsList) =>
-      reportStudentsList ? res.json(reportStudentsList) : res.sendStatus(404)
+function getByAccountId(req, res, next) {
+  persoanlReportsListService
+    .getByReportId(req.params.accountId)
+    .then((PersonalReportsList) =>
+      PersonalReportsList ? res.json(PersonalReportsList) : res.sendStatus(404)
     )
     .catch(next);
 }
 
-function createReportStudentsList(req, res, next) {
-  reportStudentsListService
-    .createReportStudentsList(req.body)
-    .then((reportStudentsList) => res.json(reportStudentsList))
+function createPersonalReportsList(req, res, next) {
+  persoanlReportsListService
+    .createPersonalReportsList(req.body)
+    .then((PersonalReportsList) => res.json(PersonalReportsList))
     .catch(next);
 }
 
-function updateReportStudentsList(req, res, next) {
-  reportStudentsListService
-    .updateReportStudentsList(req.params.reportId, req.body)
-    .then((reportStudentsList) => res.json(reportStudentsList))
+// when adding to a personal reports list...
+function updatePersonalReportsList(req, res, next) {
+  console.log(req.params,"the params");
+  persoanlReportsListService
+    .updatePersonalReportsList(req.params)
+    .then((PersonalReportsList) => res.json(PersonalReportsList))
     .catch(next);
 }
 
 function _delete(req, res, next) {
-  reportStudentsListService
-    .delete(req.params.reportId)
+  persoanlReportsListService
+    .delete(req.params.accountId)
     .then(() =>
-      res.json({ message: "Report Students List deleted successfully" })
+      res.json({ message: "Personal Reports List deleted successfully" })
     )
     .catch(next);
 }

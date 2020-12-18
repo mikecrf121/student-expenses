@@ -33,7 +33,7 @@ app.use(
 // Accounts Routes
 app.use("/accounts", require("./accounts/accounts.controller"));
 app.use(
-  "/account/personal-reports-list",
+  "/accounts/personal-reports-list",
   require("./accounts/personal-reports-list/personal-reports-list.controller")
 );
 app.use("/reports", require("./reports/reports.controller"));

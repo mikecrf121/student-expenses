@@ -24,10 +24,17 @@ async function getById(id) {
   return basicDetails(report);
 }
 
+// When I create a new report, im also creating a report students list
 async function create(params) {
   const report = new db.Report(params);
-  await report.save();
-  return basicDetails(report);
+  await report.save()
+  .then(async ()=>{
+    const reportStudentsList = new db.ReportStudentsList({reportId: report.id});
+    await reportStudentsList.save();
+  })
+  .finally(async ()=>{
+    return basicDetails(report);
+  });
 }
 
 async function update(id, params) {

@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema(
   {
+    reportId: {type: String, required: true},
     students: { type: Array, required: false },
     created: { type: Date, default: Date.now },
     updated: Date,

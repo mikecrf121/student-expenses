@@ -47,6 +47,16 @@ export class ReportService {
     );
   }
 
+  async updateReportStudentsList(reportId: string, accountId: string,body?:any) {
+    return this.http
+      .put(`${baseUrl}/report-students-list/${reportId}/${accountId}`,body)
+      .pipe(
+        map(async (reportStudentsList: any) => {
+          return reportStudentsList;
+        })
+      );
+  }
+
   delete(id: string) {
     return this.http.delete(`${baseUrl}/${id}`).pipe(finalize(() => {}));
   }
