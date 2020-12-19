@@ -133,8 +133,9 @@ export class AccountService {
     return this.http.get<Account>(`${baseUrl}/${reportsManagerId}/students`);
   }
 
+  // Return Report SPECIFIC Data 1.2.1
   async getAllStudentsByReportId(reportId: string) {
-    return this.http.get<Account[]>(`${baseUrl}/${reportId}/report-students`);
+    return this.http.get<Account[]>(`${baseUrl}/${reportId}/report-students-by-report-id`);
   }
 
   //***** For create account page for admins, get all reportsmanagers and admins who can also be a reports manager

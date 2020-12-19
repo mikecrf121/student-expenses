@@ -88,8 +88,10 @@ export class ReportDetailsPage {
       })
       .then(async () => {
         // Get Report Students
+        // NEW 1.2.1
         (await this.accountService.getAllStudentsByReportId(this.reportId))
           .forEach(async (Elem) => {
+            //console.log(Elem);
             this.reportStudents = Elem;
             const reportStudentCount = this.reportStudents.length;
             for (let i = 0; i < reportStudentCount; i++) {

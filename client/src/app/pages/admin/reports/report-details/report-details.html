@@ -97,8 +97,9 @@
               </ion-label>
               <ion-label>
                 <p>
-                  <b>Expenses:&nbsp;( {{account.studentExpensesCount}} )</b>
+                  <b><u>All Expenses</u></b>
                 </p>
+                <p>( {{account.studentExpensesCount}} )</p>
               </ion-label>
             </ion-item>
 <!-- IDK about showing this
@@ -169,7 +170,7 @@
                 <ion-item detail="false" lines="none">
                   <ion-label>
                     <h1><b>{{student.firstName}} {{student.lastName}}</b></h1>
-                    <h3>Expenses: {{student.studentExpensesCount}}</h3>
+                    <h3>Rpt. Expenses: ( {{student.studentExpensesCountOnReport}} )</h3>
                     <h4>Total: ${{student.expensesTotal}}</h4>
                   </ion-label>
                   <ion-label>

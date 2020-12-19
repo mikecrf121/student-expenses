@@ -40,6 +40,8 @@ router.get(
 router.get("/:accountId", authorize(), getById);
 router.get("/:accountEmail/by-email", authorize(), getByEmail);
 router.get("/:reportId/report-students", authorize(), getAllStudentsByReportId);
+// New on 1.2.1
+router.get("/:reportId/report-students-by-report-id", authorize(), getStudentsOnReport);
 router.post("/", createSchema, createAccount);
 router.put("/:accountId", authorize(), update);
 router.delete("/:accountId", authorize(), _delete);
@@ -73,6 +75,15 @@ function getAllStudentsInReports(req, res, next) {
   //console.log(req)
   accountService
     .getAllStudentsInReports(req.params.reportsManagerId)
+    .then((accounts) => res.json(accounts))
+    .catch(next);
+}
+
+// New for 1.2.1
+function getStudentsOnReport(req, res, next) {
+  //console.log(req)
+  accountService
+    .getStudentsOnReport(req.params.reportId)
     .then((accounts) => res.json(accounts))
     .catch(next);
 }

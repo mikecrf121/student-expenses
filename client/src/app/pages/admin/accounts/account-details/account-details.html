@@ -136,9 +136,9 @@
         <ion-col>
           <ion-item *ngIf="!studentReport && account.role=='Student'"><b>Current Expense Report:</b>&nbsp;Not Assigned To A Report Currently</ion-item>
           <!-- Incase no report assignment yet-->
-          <ion-item *ngIf="account.role=='Student' && studentReport"><b>Current Expense Report:&nbsp;</b>
-            <ion-button fill="clear" routerLink="{{currentRoute}}/current-report-details/{{studentReport.id}}">
-              {{studentReport.reportName}}&nbsp;<ion-icon name="eye">
+          <ion-item *ngIf="account.role=='Student' && studentReport"><b>Current Expense Report(s):&nbsp;</b>
+            <ion-button *ngFor="let report of accountPersonalReportsList" fill="clear" routerLink="{{currentRoute}}/report-details/{{report.reportId}}">
+              {{report.reportName}}&nbsp;<ion-icon name="eye">
               </ion-icon>
             </ion-button>
           </ion-item>

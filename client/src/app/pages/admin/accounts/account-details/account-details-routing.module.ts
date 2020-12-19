@@ -45,7 +45,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: "current-report-details/:reportId",
+    path: "report-details/:reportId",
     loadChildren: () =>
       import(
         "@app/pages/admin/reports/report-details/report-details.module"

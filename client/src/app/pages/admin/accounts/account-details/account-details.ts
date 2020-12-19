@@ -48,6 +48,7 @@ export class AccountDetailsPage {
   totalCurrencyString: string;
   allReportsManagers: Account[];
   loadReportsManagersListDone: boolean;
+  accountPersonalReportsList: any;
 
   constructor(
     public route: ActivatedRoute,
@@ -73,6 +74,8 @@ export class AccountDetailsPage {
       .forEach(async (Account) => {
         //console.log(Account)
         this.account = Account;
+        // New for 1.2.1
+        this.accountPersonalReportsList = Account.personalReportsList.reports;
         this.reportsManager = Account.reportsManager;
         this.studentReport = Account.studentReport;
         this.studentExpenses = Account.studentExpenses;

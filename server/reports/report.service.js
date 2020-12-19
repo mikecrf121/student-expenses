@@ -11,9 +11,11 @@ module.exports = {
 
 async function getAll() {
   const report = await db.Report.find()
-    .populate("reportStudentsCount")
+    //.populate("reportStudentsCount") REMOVED 1.2.1 //<-----Deprecated
+    .populate("reportStudentsList")
     .populate("reportExpensesCount")
     .populate("reportsManager");
+
 
   return report.map((x) => basicDetails(x));
 }
@@ -27,14 +29,17 @@ async function getById(id) {
 // When I create a new report, im also creating a report students list
 async function create(params) {
   const report = new db.Report(params);
-  await report.save()
-  .then(async ()=>{
-    const reportStudentsList = new db.ReportStudentsList({reportId: report.id});
-    await reportStudentsList.save();
-  })
-  .finally(async ()=>{
-    return basicDetails(report);
-  });
+  await report
+    .save()
+    .then(async () => {
+      const reportStudentsList = new db.ReportStudentsList({
+        reportId: report.id,
+      });
+      await reportStudentsList.save();
+    })
+    .finally(async () => {
+      return basicDetails(report);
+    });
 }
 
 async function update(id, params) {
@@ -70,7 +75,8 @@ async function getAllReportsOnAccount(reportsManagerId) {
     reportsManagerId: reportsManagerId,
   })
     .populate("reportStudentsCount")
-    .populate("reportExpensesCount");
+    .populate("reportExpensesCount")
+    .populate("reportStudentsList");
   return await reports;
 }
 
@@ -93,7 +99,8 @@ function basicDetails(report) {
     reportsManager,
     reportName,
     reportStudents,
-    reportStudentsCount,
+    reportStudentsCount, //<-----Deprecated, calculating on service function now instead of virtual
+    reportStudentsList,
     reportExpensesCount,
     reportExpenses,
     created,
@@ -105,7 +112,8 @@ function basicDetails(report) {
     reportsManager,
     reportName,
     reportStudents,
-    reportStudentsCount,
+    reportStudentsCount, //<-----Deprecated
+    reportStudentsList,
     reportExpensesCount,
     reportExpenses,
     created,

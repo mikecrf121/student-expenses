@@ -78,9 +78,9 @@
 
       <ion-row>
         <ion-col>
-          <ion-item><b>Current Expense Report:&nbsp;</b>
-            <ion-button fill="clear" routerLink="{{currentRoute}}/report-details/{{currentReport.id}}">
-              {{currentReport.reportName}}&nbsp;<ion-icon name="eye">
+          <ion-item><b>Current Expense Report(s):&nbsp;</b>
+            <ion-button *ngFor="let report of studentPersonalReportsList" fill="clear" routerLink="{{currentRoute}}/report-details/{{report.reportId}}">
+              {{report.reportName}}&nbsp;<ion-icon name="eye">
               </ion-icon>
             </ion-button>
           </ion-item>
