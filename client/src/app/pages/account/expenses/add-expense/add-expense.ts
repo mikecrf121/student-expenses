@@ -46,7 +46,7 @@ export class AddExpensePage {
     (await this.loading).present();
     this.account = null;
     this.account = this.accountService.accountValue;
-    console.log(this.account,"The account???")
+    //console.log(this.account,"The account???")
 
     this.accountId = this.route.snapshot.paramMap.get("accountId"); //<----------potentially null for regular students
     let acctId: string;
@@ -56,10 +56,10 @@ export class AddExpensePage {
     await (await this.accountService.getById(acctId))
       .forEach(async (Element) => {
         // Replace this with their personal reports list....
-        console.log(Element);
+        //console.log(Element);
         this.acctFetched = Element;
         this.personalReportsList = Element.personalReportsList.reports;
-        console.log(this.personalReportsList);
+        //console.log(this.personalReportsList);
       })
       .finally(() => {
         setTimeout(async () => {
