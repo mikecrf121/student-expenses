@@ -84,8 +84,8 @@ export class ExpenseDetailsPage {
         this.expenseName = Element.expenseName;
         this.expenseCost = Element.expenseCost;
         //TODO fix these to be singular returns
-        this.expenseCreatedBy = Element.expenseStudent[0];
-        this.expenseReport = Element.expenseReport[0];
+        this.expenseCreatedBy = Element.expenseStudent;
+        this.expenseReport = Element.expenseReport;
         this.expenseCategory = Element.expenseCategory;
         this.expenseCreated = moment(Element.created).format(
           "MMM-DD-YYYY @HH:mm"

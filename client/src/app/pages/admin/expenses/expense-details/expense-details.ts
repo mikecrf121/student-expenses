@@ -60,10 +60,10 @@ export class ExpenseDetailsPage {
         //console.log(Element);
         this.expenseName = Element.expenseName;
         this.expenseCost = Element.expenseCost;
-        this.expenseCreatedBy = Element.expenseStudent[0]; ///TODO make this one back
-        this.expenseReport = Element.expenseReport[0]; // TODO make this singular
+        this.expenseCreatedBy = Element.expenseStudent; ///TODO make this one back
+        this.expenseReport = Element.expenseReport; // TODO make this singular
         this.expenseCategory = Element.expenseCategory;
-        this.expenseReportsManager = Element.expenseReportsManager[0];
+        this.expenseReportsManager = Element.expenseReportsManager;
         this.expenseCreated = moment(Element.created).format(
           "MMM-DD-YYYY   @HH:mm" // Yea this will break down to the milli second.
         );
