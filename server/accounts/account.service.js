@@ -29,7 +29,7 @@ module.exports = {
   getAllStudentsByReportId,
   getAllReportsManagers,
   getAllReportsManagerReports,
-  getStudentsOnReport
+  getStudentsOnReport,
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -234,12 +234,12 @@ async function getStudentsOnReport(reportId) {
   const reportStudentsList = await db.ReportStudentsList.findOne({
     reportId: reportId,
   });
-  console.log(reportStudentsList,"the list??")
+  //console.log(reportStudentsList, "the list??");
   // Loop through that List and calculate expenses for this report from each student
   const studentListArray = reportStudentsList.students;
   const studentCount = reportStudentsList.students.length;
-  let studentsFullDetailsArray=[];
-  console.log(studentCount,"The student count???")
+  let studentsFullDetailsArray = [];
+  //console.log(studentCount,"The student count???")
   // For Each Student on The Report Students List, load the students full detail array
   for (let i = 0; i < studentCount; i++) {
     // get each student account
@@ -249,7 +249,7 @@ async function getStudentsOnReport(reportId) {
       .populate("studentExpenses")
       .populate("studentExpensesCount");
 
-      console.log(studentsFullDetailsArray[i],"The student??")
+    //console.log(studentsFullDetailsArray[i],"The student??")
 
     let studentExpensesCount =
       studentsFullDetailsArray[i].studentExpenses.length;
@@ -267,9 +267,11 @@ async function getStudentsOnReport(reportId) {
     studentsFullDetailsArray[i].expensesTotal = Number(
       studentExpenseTotal
     ).toFixed(2);
-    studentsFullDetailsArray[i].studentExpensesCountOnReport = studentExpensesCountNew;
+    studentsFullDetailsArray[
+      i
+    ].studentExpensesCountOnReport = studentExpensesCountNew;
     // Only for the current report count...
-    console.log(studentsFullDetailsArray,"AND THIS??");
+    //console.log(studentsFullDetailsArray, "AND THIS??");
   }
   return studentsFullDetailsArray.map((x) => basicDetails(x));
 }
@@ -541,7 +543,7 @@ function basicDetails(account) {
     expensesTotal,
     personalReportsListId,
     personalReportsList,
-    studentExpensesCountOnReport
+    studentExpensesCountOnReport,
   } = account;
   return {
     id,
@@ -572,7 +574,7 @@ function basicDetails(account) {
     expensesTotal,
     personalReportsListId,
     personalReportsList,
-    studentExpensesCountOnReport
+    studentExpensesCountOnReport,
   };
 }
 
