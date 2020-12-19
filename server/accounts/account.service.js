@@ -42,7 +42,7 @@ async function authenticate({ email, password, ipAddress }) {
     !account.isVerified ||
     !bcrypt.compareSync(password, account.passwordHash)
   ) {
-    console.log("So whats wrong???");
+    //console.log("So whats wrong???");
     throw "Email or password is incorrect";
   }
   //TODO
