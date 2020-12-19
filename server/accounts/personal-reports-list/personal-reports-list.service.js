@@ -24,6 +24,7 @@ async function updatePersonalReportsList(params) {
   });
   const report = await db.Report.findOne({_id:params.reportId});
   // So I can have the report name for when the student selects it when adding expenses.. TODO trim
+  // TODO remove name... instead query on it on client side, incase name is changed????
   await personalReportsList.reports.push({ reportId: params.reportId, reportName:report.reportName });
 
   personalReportsList.updated = Date.now();

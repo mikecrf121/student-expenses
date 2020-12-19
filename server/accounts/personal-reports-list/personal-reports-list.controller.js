@@ -12,25 +12,25 @@ const persoanlReportsListService = require("./personal-reports-list.service");
 // Used to load the Report Details view potentially
 router.get(
   "/:accountId",
-  authorize(Role.Admin, Role.RepotsManager),
+  authorize(),
   getByAccountId
 );
 // Whenever a RM creates a report, this should be created concurently
 router.post(
   "/",
-  authorize(Role.Admin, Role.RepotsManager),
+  authorize(),
   createPersonalReportsList
 );
 // Whenever students are added or deleted from a report
 router.put(
   "/:accountId/:reportId",
-  authorize(Role.Admin, Role.RepotsManager),
+  authorize(),
   updatePersonalReportsList
 );
 // If the Report for whatever reason is deleted/Archived, this will go for the ride
 router.delete(
   "/:accountId",
-  authorize(Role.Admin, Role.ReportsManager),
+  authorize(),
   _delete
 );
 

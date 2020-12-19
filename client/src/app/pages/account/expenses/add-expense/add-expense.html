@@ -48,7 +48,7 @@
       <ion-item>
         <ion-label position="floating" color="primary">Expense Report</ion-label>
         <ion-select [(ngModel)]="addExpense.reportId" name="reportId" #reportId="ngModel">
-          <ion-select-option *ngIf="personalReportsList[0]==null">Must Assign To A Report First!</ion-select-option>
+          <ion-select-option *ngIf="personalReportsList==null">Must Assign To A Report First!</ion-select-option>
           <ion-select-option  *ngFor="let report of personalReportsList" value="{{report.reportId}}">{{report.reportName}}</ion-select-option>
         </ion-select>
       </ion-item>
