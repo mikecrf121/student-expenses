@@ -65,7 +65,7 @@ export class ExpenseDetailsPage {
 
     (await this.expenseService.getById(this.expenseId))
       .forEach(async (Element) => {
-        //console.log(Element);
+        console.log(Element);
         this.expenseName = Element.expenseName;
         this.expenseCost = Element.expenseCost;
         this.expenseCategory = Element.expenseCategory;
