@@ -10,7 +10,7 @@ const reportStudentsListService = require("./report-students-list.service");
 // Used to load the Report Details view potentially
 router.get(
   "/:reportId",
-  authorize(),
+  authorize([Role.Admin,Role.ReportsManager]),
   getByReportId
 );
 // Check if Account on this reports' student list
@@ -22,17 +22,17 @@ router.get(
 // Whenever a RM creates a report, this should be created concurently
 router.post(
   "/",
-  authorize(),
+  authorize([Role.Admin,Role.ReportsManager]),
   createReportStudentsList
 );
 // Whenever students are added or deleted from a report
 router.put(
   "/:reportId/:accountId",
-  authorize(),
+  authorize([Role.Admin,Role.ReportsManager]),
   updateReportStudentsList
 );
 // If the Report for whatever reason is deleted/Archived, this will go for the ride
-router.delete("/:reportId", authorize(), _delete);
+router.delete("/:reportId", authorize([Role.Admin,Role.ReportsManager]), _delete);
 
 module.exports = router;
 

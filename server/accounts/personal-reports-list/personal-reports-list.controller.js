@@ -18,19 +18,19 @@ router.get(
 // Whenever a RM creates a report, this should be created concurently
 router.post(
   "/",
-  authorize(),
+  authorize([Role.Admin,Role.ReportsManager]),
   createPersonalReportsList
 );
 // Whenever students are added or deleted from a report
 router.put(
   "/:accountId/:reportId",
-  authorize(),
+  authorize([Role.Admin,Role.ReportsManager]),
   updatePersonalReportsList
 );
 // If the Report for whatever reason is deleted/Archived, this will go for the ride
 router.delete(
   "/:accountId",
-  authorize(),
+  authorize([Role.Admin,Role.ReportsManager]),
   _delete
 );
 
