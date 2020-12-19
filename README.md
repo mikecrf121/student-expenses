@@ -72,4 +72,9 @@ This apps is still in early development.
 <a href="https://github.com/mikecrf121/ql-student-expenses-ionic/issues/14">Future Releases</a>
 
 
+# Release Notes
+
+1.3.0 - Allow students to now have multiple reports at the same time!  In app version 2.0.0
+    
+
 
