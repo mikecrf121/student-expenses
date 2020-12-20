@@ -130,12 +130,15 @@ async function revokeToken({ token, ipAddress }) {
 
 async function register(params, origin) {
   // validate
+  //console.log(params,"here")
   if (await db.Account.findOne({ email: params.email })) {
     // send already registered error in email to prevent account enumeration
     return await sendAlreadyRegisteredEmail(params.email, origin);
   }
+  //console.log("Getting here???")
   // createAccount account object
   const account = new db.Account(params);
+
   // first registered account is an admin
   const isFirstAccount = (await db.Account.countDocuments({})) === 0;
   account.role = isFirstAccount
@@ -146,11 +149,12 @@ async function register(params, origin) {
     ? Role.Admin
     : Role.Student;
   account.verificationToken = randomTokenString();
+
   // hash password
   account.passwordHash = hash(params.password);
+
   // save account
   await account.save();
-  // create personal reports list<--- Deprecated
 
   // send email
   await sendVerificationEmail(account, origin);
