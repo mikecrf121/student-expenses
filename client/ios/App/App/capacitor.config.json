@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "ionic-conference-app",
+  "appId": "io.ionic.student.expenses",
+  "appName": "ionic-student-expenses-app",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
