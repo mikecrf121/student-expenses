@@ -14,7 +14,6 @@ module.exports = {
 async function getAll() {
   const report = await db.Report.find()
     //.populate("reportStudentsCount") REMOVED 1.2.1 //<-----Deprecated
-    .populate("reportStudentsList")
     .populate("reportExpensesCount")
     .populate("reportsManager");
 
@@ -127,7 +126,6 @@ function basicDetails(report) {
     reportsManager,
     reportName,
     reportStudents,
-    reportStudentsCount, //<-----Deprecated, calculating on service function now instead of virtual
     reportStudentsList,
     reportExpensesCount,
     reportExpenses,
@@ -140,7 +138,6 @@ function basicDetails(report) {
     reportsManager,
     reportName,
     reportStudents,
-    reportStudentsCount, //<-----Deprecated
     reportStudentsList,
     reportExpensesCount,
     reportExpenses,

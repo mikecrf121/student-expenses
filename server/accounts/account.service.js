@@ -247,13 +247,13 @@ async function getAllStudentsInReports(reportsManagerId) {
 // 1.2.1 Getting all students and expenses total for SPECIFIC Report DATA
 async function getStudentsOnReport(reportId) {
   // First get this Report Students List
-  const reportStudentsList = await db.ReportStudentsList.findOne({
-    reportId: reportId,
+  const report = await db.Report.findOne({
+    _id: reportId,
   });
-  //console.log(reportStudentsList, "the list??");
+  //console.log(report, "the list??");
   // Loop through that List and calculate expenses for this report from each student
-  const studentListArray = reportStudentsList.students;
-  const studentCount = reportStudentsList.students.length;
+  const studentListArray = report.reportStudentsList;
+  const studentCount = report.reportStudentsList.length;
   let studentsFullDetailsArray = [];
   //console.log(studentCount,"The student count???")
   // For Each Student on The Report Students List, load the students full detail array

@@ -84,7 +84,7 @@ export class ReportsPage {
             for (let i = 0; i < reportsCount; i++) {
               this.allReports[i].reportStudentsCount = this.allReports[
                 i
-              ].reportStudentsList.students.length;
+              ].reportStudentsList.length;
               this.allReports[i].created = moment(
                 this.allReports[i].created
               ).format("MMM-DD-YYYY");

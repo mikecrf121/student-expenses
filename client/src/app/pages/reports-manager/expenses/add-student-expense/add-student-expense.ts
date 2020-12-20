@@ -59,7 +59,7 @@ export class AddStudentExpensePage {
         .forEach(async (Element) => {
           // Replace this with their personal reports list....
           this.acctFetched = Element;
-          this.personalReportsList = Element.personalReportsList.reports;
+          this.personalReportsList = Element.personalReportsList;
         })
         .finally(() => {
           setTimeout(async () => {

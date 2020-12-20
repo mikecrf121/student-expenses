@@ -7,7 +7,7 @@ const authorize = require("_middleware/authorize");
 const Role = require("_helpers/role");
 const reportService = require("./report.service");
 // routes
-router.get("/", authorize(Role.Admin), getAll);
+router.get("/", authorize([Role.Admin]), getAll);
 router.get("/:reportId", authorize(), getById);
 router.get("/report-students-list/:reportId/:accountId/check-if-on", authorize(), onReportStudentsListChecker);
 router.post("/", authorize(), create);
