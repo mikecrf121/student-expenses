@@ -66,8 +66,8 @@ export class StudentDetailsPage {
     (await this.accountService.getById(this.student.id))
       .forEach(async (Element) => {
         //console.log(Element)
-        // New for 1.2.1
-        this.studentPersonalReportsList = Element.personalReportsList.reports;
+        // New for 1.4.0
+        this.studentPersonalReportsList = Element.personalReportsList;
         //
         this.student = Element;
         this.student.created = moment(Element.created).format("MMM-DD-YYYY");

@@ -74,8 +74,8 @@ export class AccountDetailsPage {
       .forEach(async (Account) => {
         //console.log(Account)
         this.account = Account;
-        // New for 1.2.1
-        this.accountPersonalReportsList = Account.personalReportsList.reports;
+        // New for 1.4.0
+        this.accountPersonalReportsList = Account.personalReportsList;
         this.reportsManager = Account.reportsManager;
         this.studentReport = Account.studentReport;
         this.studentExpenses = Account.studentExpenses;
