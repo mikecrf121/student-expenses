@@ -58,7 +58,7 @@ export class AddExpensePage {
         // Replace this with their personal reports list....
         //console.log(Element);
         this.acctFetched = Element;
-        this.personalReportsList = Element.personalReportsList.reports;
+        this.personalReportsList = Element.personalReportsList;
         //console.log(this.personalReportsList);
       })
       .finally(() => {

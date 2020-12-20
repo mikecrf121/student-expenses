@@ -30,19 +30,8 @@ app.use(
 );
 
 // Main api routes
-// Accounts Routes
 app.use("/accounts", require("./accounts/accounts.controller"));
-app.use(
-  "/accounts/personal-reports-list",
-  require("./accounts/personal-reports-list/personal-reports-list.controller")
-);
 app.use("/reports", require("./reports/reports.controller"));
-// Reports Routes
-app.use(
-  "/reports/report-students-list",
-  require("./reports/report-students-list/report-students-list.controller")
-);
-// Expenses Routes
 app.use("/expenses", require("./expenses/expenses.controller"));
 // Storage & Images Routes
 app.use("/storage", require("./images/images-service"));

@@ -30,6 +30,7 @@ module.exports = {
   getAllReportsManagers,
   getAllReportsManagerReports,
   getStudentsOnReport,
+  updatePersonalReportsList
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -68,6 +69,21 @@ async function authenticate({ email, password, ipAddress }) {
     jwtToken,
     refreshToken: refreshToken.token,
   };
+}
+
+// NEW 1.3.2^
+async function updatePersonalReportsList(params) {
+  const account = await db.Account.findOne({
+    _id: params.accountId,
+  });
+  const report = await db.Report.findOne({_id:params.reportId});
+  // So I can have the report name for when the student selects it when adding expenses.. TODO trim
+  // TODO remove name... instead query on it on client side, incase name is changed????
+  await account.personalReportsList.push({ reportId: params.reportId, reportName:report.reportName });
+
+  account.updated = Date.now();
+  await account.save();
+  return basicDetails(account);
 }
 
 async function refreshToken({ token, ipAddress }) {
@@ -134,12 +150,8 @@ async function register(params, origin) {
   account.passwordHash = hash(params.password);
   // save account
   await account.save();
-  // create personal reports list
-  const newPersonalReportsList = new db.PersonalReportsList({
-    accountId: account.id,
-  });
-  //console.log(newPersonalReportsList, "???");
-  await newPersonalReportsList.save();
+  // create personal reports list<--- Deprecated
+
   // send email
   await sendVerificationEmail(account, origin);
 }
@@ -360,8 +372,7 @@ async function getById(id) {
     .populate("reportsManagerExpenses")
     .populate("reportsManagerStudents")
     .populate("reportsManagerExpensesCount")
-    .populate("reportsManagerStudentsCount")
-    .populate("personalReportsList");
+    .populate("reportsManagerStudentsCount");
 
   return basicDetails(account);
 }
@@ -541,7 +552,6 @@ function basicDetails(account) {
     reportsManagerExpensesCount,
     reportsManagerStudentsCount,
     expensesTotal,
-    personalReportsListId,
     personalReportsList,
     studentExpensesCountOnReport,
   } = account;
@@ -572,7 +582,6 @@ function basicDetails(account) {
     reportsManagerExpensesCount,
     reportsManagerStudentsCount,
     expensesTotal,
-    personalReportsListId,
     personalReportsList,
     studentExpensesCountOnReport,
   };

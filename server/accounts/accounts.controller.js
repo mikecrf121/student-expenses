@@ -69,6 +69,13 @@ router.get(
   authorize(),
   getAllExpensesInReports
 );
+
+router.put(
+  "/personal-reports-list/:accountId/:reportId",
+  authorize([Role.Admin, Role.ReportsManager]),
+  updatePersonalReportsList
+);
+
 module.exports = router;
 
 function getAllStudentsInReports(req, res, next) {
@@ -79,12 +86,20 @@ function getAllStudentsInReports(req, res, next) {
     .catch(next);
 }
 
-// New for 1.2.1
+// New for 1.2.1 
 function getStudentsOnReport(req, res, next) {
   //console.log(req)
   accountService
     .getStudentsOnReport(req.params.reportId)
     .then((accounts) => res.json(accounts))
+    .catch(next);
+}
+
+// when adding to a personal reports list...
+function updatePersonalReportsList(req, res, next) {
+  accountService
+    .updatePersonalReportsList(req.params)
+    .then((PersonalReportsList) => res.json(PersonalReportsList))
     .catch(next);
 }
 

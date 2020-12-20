@@ -158,4 +158,18 @@ export class AccountsPage {
       this.updateView();
     }
   }
+
+
+
+  // For IOS refreshhhh, need to look more into this...
+
+  async doRefresh(refresher:any) {
+
+    this.ionViewWillEnter();
+
+    setTimeout(() => {
+      //console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
 }

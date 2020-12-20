@@ -7,6 +7,8 @@ module.exports = {
   update,
   delete: _delete,
   getAllReportsOnAccount,
+  onReportStudentsListChecker,
+  updateReportStudentsList
 };
 
 async function getAll() {
@@ -20,6 +22,39 @@ async function getAll() {
   return report.map((x) => basicDetails(x));
 }
 
+// return true or false...
+async function onReportStudentsListChecker(params) {
+  const report = await db.Report.findOne({
+    _id: params.reportId,
+  });
+
+  const reportStudentsListArray = await report.reportStudentsList;
+
+  if (
+    reportStudentsListArray.some(
+      (student) => student.accountId == params.accountId
+    )
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+// ergo adding to this.....
+async function updateReportStudentsList(params) {
+  const report = await db.Report.findOne({
+    _id: params.reportId,
+  });
+
+  await report.reportStudentsList.push({ accountId: params.accountId });
+
+  report.updated = Date.now();
+  await report.save();
+  return basicDetails(report);
+}
+
 async function getById(id) {
   const report = await getReport(id);
 
@@ -31,12 +66,6 @@ async function create(params) {
   const report = new db.Report(params);
   await report
     .save()
-    .then(async () => {
-      const reportStudentsList = new db.ReportStudentsList({
-        reportId: report.id,
-      });
-      await reportStudentsList.save();
-    })
     .finally(async () => {
       return basicDetails(report);
     });
@@ -75,8 +104,7 @@ async function getAllReportsOnAccount(reportsManagerId) {
     reportsManagerId: reportsManagerId,
   })
     .populate("reportStudentsCount")
-    .populate("reportExpensesCount")
-    .populate("reportStudentsList");
+    .populate("reportExpensesCount");
   return await reports;
 }
 

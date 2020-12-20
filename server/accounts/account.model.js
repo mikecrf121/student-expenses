@@ -5,7 +5,7 @@ const schema = new Schema(
   {
     email: { type: String, unique: true, required: true },
     reportsManagerId: { type: String, required: false },
-    personalReportsListId: { type: String, required: false }, // So Account can be associated with more than one Report
+    personalReportsList: { type: Array, required: false }, // This instead of creating a whole new doc collection...
     reportId: { type: String, required: false },
     passwordHash: { type: String, required: true },
     title: { type: String, required: true },
@@ -36,12 +36,13 @@ schema.virtual("isVerified").get(function () {
   return !!(this.verified || this.passwordReset);
 });
 
+/* DEPRECATED
 schema.virtual("personalReportsList", {
   ref: "PersonalReportsList", // The model to use
   localField: "_id", // Find people where `localField`
   foreignField: "accountId", // is equal to `foreignField`
   justOne: true,
-});
+});*/
 
 // My Expenses as a Expense Owner
 schema.virtual("studentExpenses", {
