@@ -17,6 +17,8 @@ You can point to a local instance or any other instance, first account created i
 
 This app is still in early development.  Master branch will be the most stable version, later branches are for developing experimental features.  
 
+***** Ethereal Email SMTP Service has been observed to be down once.. please be advised.
+
 ## <u>Table Of Contents</u>:
 1. <a href="#for-ql-student-expenses-runners">Instructions for Running</a>
 2. <a href="#deploying">Instructions for Deploying</a>
@@ -70,6 +72,9 @@ This app is still in early development.  Master branch will be the most stable v
 ## Future Milestones
 
 <a href="https://github.com/mikecrf121/ql-student-expenses-ionic/issues/14">Future Releases</a>
+
+## Releases
+1.4.1^ :  Students can now be associated with more than one report.  Very Stable Build.
 
 
 
