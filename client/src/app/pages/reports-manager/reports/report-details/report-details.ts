@@ -295,8 +295,7 @@ export class ReportDetailsPage {
         this.calculatingDisbursements = true;
         this.disbursementResults = false;
         const studentCount = this.reportStudents.length;
-        let averageOfExpenses = this.totalOfReportExpenses / studentCount;
-        averageOfExpenses = Number(averageOfExpenses);
+        const averageOfExpenses = Number(this.totalOfReportExpenses / studentCount);
         // loop through each student and calculate what they owe or is owed from disbursement pot
         for (let i = 0; i < studentCount; i++) {
           let studentExpensesTotal = Number(

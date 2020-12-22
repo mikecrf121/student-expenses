@@ -221,8 +221,8 @@ export class ReportDetailsPage {
   async deleteReport() {
     this.deleting = this.alertService.presentLoading("Deleting Report...");
     (await this.deleting).present();
-    this.reportService
-      .delete(this.reportId)
+    (await this.reportService
+      .delete(this.reportId))
       .pipe(first())
       .subscribe({
         next: async () => {
@@ -286,8 +286,7 @@ export class ReportDetailsPage {
       .present()
       .then(async () => {
         const studentCount = this.reportStudents.length;
-        let averageOfExpenses = this.totalOfReportExpenses / studentCount;
-        averageOfExpenses = Number(averageOfExpenses);
+        const averageOfExpenses = Number(this.totalOfReportExpenses / studentCount);
         // loop through each student and calculate what they owe or is owed from disbursement pot
         for (let i = 0; i < studentCount; i++) {
           let studentExpensesTotal = Number(
