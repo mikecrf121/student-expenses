@@ -215,7 +215,7 @@ export class ReportDetailsPage {
       buttons: [
         {
           text: "Cancel",
-          handler: () => {},
+          handler: async () => {},
         },
         {
           text: "DELETE",
@@ -264,7 +264,7 @@ export class ReportDetailsPage {
       buttons: [
         {
           text: "Cancel",
-          handler: () => {},
+          handler: async () => {},
         },
         {
           text: "Archive",
