@@ -31,8 +31,8 @@ export class ReportDetailsPage {
   reportName: string;
   reportExpensesCount: number = 0;
   reportStudentsCount: number;
-  reportStudents: [Account] | any; //TODO fix this
-  userExpenses: [Expense];
+  reportStudents: Account[] | any; //TODO fix this
+  userExpenses: Expense[];
   totalOfReportExpenses: number;
   totalOfReportExpensesString: string;
   calculatingDisbursementsLoader: Promise<HTMLIonLoadingElement>;
@@ -64,7 +64,7 @@ export class ReportDetailsPage {
     (await this.loading).present();
     this.data = false;
     this.calculatingDisbursements = false;
-    this.viewingAccount =this.accountService.accountValue;
+    this.viewingAccount = this.accountService.accountValue;
     // Reset because of weird behavior observed...
     this.totalOfReportExpenses = 0;
     this.accountId = this.accountService.accountValue.id;
@@ -232,28 +232,25 @@ export class ReportDetailsPage {
   async deleteReport() {
     this.deleting = this.alertService.presentLoading("Deleting Report...");
     (await this.deleting).present();
-    (await this.reportService
-      .delete(this.reportId))
-      .pipe(first())
-      .subscribe({
-        next: async () => {
-          (await this.deleting).dismiss();
-          this.alertService.createToastAlert(
-            "Report Deleted Successfully!",
-            "success",
-            8000
-          );
-          this._location.back();
-        },
-        error: async (error) => {
-          (await this.deleting).dismiss();
-          this.alertService.createToastAlert(
-            "Report Delete failed.....!",
-            "danger",
-            8000
-          );
-        },
-      });
+    (await this.reportService.delete(this.reportId)).pipe(first()).subscribe({
+      next: async () => {
+        (await this.deleting).dismiss();
+        this.alertService.createToastAlert(
+          "Report Deleted Successfully!",
+          "success",
+          8000
+        );
+        this._location.back();
+      },
+      error: async (error) => {
+        (await this.deleting).dismiss();
+        this.alertService.createToastAlert(
+          "Report Delete failed.....!",
+          "danger",
+          8000
+        );
+      },
+    });
   }
 
   // Archive Report Functions
@@ -295,7 +292,9 @@ export class ReportDetailsPage {
         this.calculatingDisbursements = true;
         this.disbursementResults = false;
         const studentCount = this.reportStudents.length;
-        const averageOfExpenses = Number(this.totalOfReportExpenses / studentCount);
+        const averageOfExpenses = Number(
+          this.totalOfReportExpenses / studentCount
+        );
         // loop through each student and calculate what they owe or is owed from disbursement pot
         for (let i = 0; i < studentCount; i++) {
           let studentExpensesTotal = Number(
