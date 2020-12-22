@@ -124,12 +124,17 @@ export class AccountService {
     return this.http.get<Account>(`${baseUrl}/${accountId}`);
   }
 
+  async getByEmail(accountEmail: string) {
+    return this.http.get<Account>(`${baseUrl}/${accountEmail}/by-email`);
+  }
+
   async getAllStudents(reportsManagerId: string) {
     return this.http.get<Account>(`${baseUrl}/${reportsManagerId}/students`);
   }
 
+  // Return Report SPECIFIC Data 1.2.1
   async getAllStudentsByReportId(reportId: string) {
-    return this.http.get<Account[]>(`${baseUrl}/${reportId}/report-students`);
+    return this.http.get<Account[]>(`${baseUrl}/${reportId}/report-students-by-report-id`);
   }
 
   //***** For create account page for admins, get all reportsmanagers and admins who can also be a reports manager
@@ -180,6 +185,21 @@ export class AccountService {
         return account;
       })
     );
+  }
+
+  async updatePersonalReportsList(
+    accountId: string,
+    reportId: string,
+    params?: any
+  ) {
+    //console.log(params)
+    return this.http
+      .put(`${baseUrl}/personal-reports-list/${accountId}/${reportId}`, params)
+      .pipe(
+        map(async (personalReportsList: any) => {
+          return personalReportsList;
+        })
+      );
   }
 
   async delete(id: string) {

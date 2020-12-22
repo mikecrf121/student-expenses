@@ -4,7 +4,7 @@ import { ActionSheetController } from "@ionic/angular";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { NgForm } from "@angular/forms";
 import { first } from "rxjs/operators";
-import { Location } from '@angular/common';
+import { Location } from "@angular/common";
 
 import { ExpenseOptions } from "@app/_interfaces";
 import { AccountService, AlertService, ExpenseService } from "@app/_services";
@@ -32,6 +32,8 @@ export class AddStudentExpensePage {
   reportsManagerId: string;
   student: Account;
   backRoute: string;
+  personalReportsList: any;
+  acctFetched: Account;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,26 +48,25 @@ export class AddStudentExpensePage {
 
   async ionViewWillEnter() {
     this.loading = this.alertService.presentLoading("Student Expenses");
-    (await this.loading)
-      .present()
-      .then(async () => {
-        // This should never be null
-        this.studentId = this.route.snapshot.paramMap.get("studentId");
-        //console.log("this student id", this.studentId);
-        // Possibly null if didnt get here through report details page
-        this.reportId = this.route.snapshot.paramMap.get("reportId");
-        //console.log("this report id", this.reportId);
-        // Getting student info to create expense
-        (await this.accountService.getById(this.studentId)).forEach(
-          async (student) => {
-            this.reportId = student.reportId;
-            this.reportsManagerId = student.reportsManagerId;
-          }
-        );
-      })
-      .finally(async () => {
-        (await this.loading).dismiss();
-      });
+    (await this.loading).present().then(async () => {
+      // This should never be null
+      this.studentId = this.route.snapshot.paramMap.get("studentId");
+      let acctId: string;
+      this.studentId ? (acctId = this.studentId) : (acctId = this.account.id);
+      //<------------------- Admin Is Adding Expense for somebody
+      //form.value.studentId = this.accountId;
+      await (await this.accountService.getById(acctId))
+        .forEach(async (Element) => {
+          // Replace this with their personal reports list....
+          this.acctFetched = Element;
+          this.personalReportsList = Element.personalReportsList;
+        })
+        .finally(() => {
+          setTimeout(async () => {
+            (await this.loading).dismiss();
+          }, 300);
+        });
+    });
   }
 
   async ionViewDidEnter() {}
@@ -91,11 +92,9 @@ export class AddStudentExpensePage {
       }, 300);
       return;
     }
-
-    form.value.studentId = this.studentId;
-    form.value.reportId = this.reportId;
-    form.value.reportsManagerId = this.reportsManagerId;
-
+    form.value.reportsManagerId = this.acctFetched.reportsManagerId;
+    form.value.studentId = this.acctFetched.id;
+    console.log(form.value);
     (await this.expenseService.create(form.value)).pipe(first()).subscribe({
       next: async () => {
         setTimeout(async () => {

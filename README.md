@@ -77,4 +77,9 @@ This app is still in early development.  Master branch will be the most stable v
 1.4.1^ :  Students can now be associated with more than one report.  Very Stable Build.
 
 
+# Release Notes
+
+1.3.0 - Allow students to now have multiple reports at the same time!  In app version 2.0.0
+    
+
 

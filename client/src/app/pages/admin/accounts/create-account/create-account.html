@@ -60,16 +60,11 @@
 
         <ion-item *ngIf="loadReportsManagerReportsListDone==true && signup.role=='Student'">
           <ion-label position="floating" color="primary">Select Report Association</ion-label>
-          <ion-select [(ngModel)]="signup.reportId" name="reportId" #reportId="ngModel" type="text" required>
+          <ion-select [(ngModel)]="signup.reportId" name="reportId" #reportId="ngModel" type="text">
             <ion-select-option *ngFor="let report of allReportsManagerReports" value="{{report.id}}">
               {{report.reportName}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-text color="danger">
-          <p [hidden]="submitted == false || signup.role!='Student' || signup.reportId" class="ion-padding-start">
-            A Report Selection Is Required
-          </p>
-        </ion-text>
 
         <ion-item>
           <ion-label position="floating" color="primary">First Name</ion-label>

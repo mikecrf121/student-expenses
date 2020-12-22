@@ -3,16 +3,18 @@
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
-        <ion-back-button defaultHref="/reports-manager/students"></ion-back-button>
+        <ion-back-button defaultHref="/reports-manager/students"  style="color: beige;background:black;border-radius: 25%;"></ion-back-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
   <div class="speaker-background"></div>
-  <ion-title style="color: primary; font-size: 30px; text-align: center">Add Student</ion-title>
+  <ion-title style="color: primary; font-size: 30px; text-align: center">Add New Student</ion-title>
   <p>
-    This will send an invite email to the student, where they are added to this
-    report.
+    Sends an invite email to the student & <b><u>Creates A New Account For Them</u> if none exists.</b>
+  </p>
+  <p>
+    If you are adding a Student to a Report, the Students Report list will now include this Report.
   </p>
   <form #AddStudentForm="ngForm" novalidate>
     <ion-list lines="none">

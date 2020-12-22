@@ -21,6 +21,13 @@ const routes: Routes = [
         "@app/pages/reports-manager/students/student-details/student-details.module"
       ).then((m) => m.StudentDetailsModule),
   },
+  {
+    path: "/add",
+    loadChildren: () =>
+      import(
+        "@app/pages/reports-manager/students/add-student/add-student.module"
+      ).then((m) => m.AddStudentModule),
+  },
 ];
 
 @NgModule({

@@ -3,3 +3,6 @@
 node_modules/
 uploads/
 
+config.json
+
+server/config.json

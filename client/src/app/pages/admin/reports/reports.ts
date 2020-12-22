@@ -82,6 +82,9 @@ export class ReportsPage {
           .then(async () => {
             const reportsCount = this.allReports.length;
             for (let i = 0; i < reportsCount; i++) {
+              this.allReports[i].reportStudentsCount = this.allReports[
+                i
+              ].reportStudentsList.length;
               this.allReports[i].created = moment(
                 this.allReports[i].created
               ).format("MMM-DD-YYYY");

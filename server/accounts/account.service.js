@@ -18,6 +18,7 @@ module.exports = {
   resetPassword,
   getAll,
   getById,
+  getByEmail,
   createAccount,
   update,
   delete: _delete,
@@ -28,6 +29,8 @@ module.exports = {
   getAllStudentsByReportId,
   getAllReportsManagers,
   getAllReportsManagerReports,
+  getStudentsOnReport,
+  updatePersonalReportsList
 };
 
 async function authenticate({ email, password, ipAddress }) {
@@ -40,7 +43,7 @@ async function authenticate({ email, password, ipAddress }) {
     !account.isVerified ||
     !bcrypt.compareSync(password, account.passwordHash)
   ) {
-    //console.log("So whats wrong???")
+    //console.log("So whats wrong???");
     throw "Email or password is incorrect";
   }
   //TODO
@@ -66,6 +69,21 @@ async function authenticate({ email, password, ipAddress }) {
     jwtToken,
     refreshToken: refreshToken.token,
   };
+}
+
+// NEW 1.3.2^
+async function updatePersonalReportsList(params) {
+  const account = await db.Account.findOne({
+    _id: params.accountId,
+  });
+  const report = await db.Report.findOne({_id:params.reportId});
+  // So I can have the report name for when the student selects it when adding expenses.. TODO trim
+  // TODO remove name... instead query on it on client side, incase name is changed????
+  await account.personalReportsList.push({ reportId: params.reportId, reportName:report.reportName });
+
+  account.updated = Date.now();
+  await account.save();
+  return basicDetails(account);
 }
 
 async function refreshToken({ token, ipAddress }) {
@@ -225,6 +243,55 @@ async function getAllStudentsInReports(reportsManagerId) {
 
   return allStudentsInReports.map((x) => basicDetails(x));
 }
+
+// 1.2.1 Getting all students and expenses total for SPECIFIC Report DATA
+async function getStudentsOnReport(reportId) {
+  // First get this Report Students List
+  const report = await db.Report.findOne({
+    _id: reportId,
+  });
+  //console.log(report, "the list??");
+  // Loop through that List and calculate expenses for this report from each student
+  const studentListArray = report.reportStudentsList;
+  const studentCount = report.reportStudentsList.length;
+  let studentsFullDetailsArray = [];
+  //console.log(studentCount,"The student count???")
+  // For Each Student on The Report Students List, load the students full detail array
+  for (let i = 0; i < studentCount; i++) {
+    // get each student account
+    studentsFullDetailsArray[i] = await db.Account.findOne({
+      _id: studentListArray[i].accountId,
+    })
+      .populate("studentExpenses")
+      .populate("studentExpensesCount");
+
+    //console.log(studentsFullDetailsArray[i],"The student??")
+
+    let studentExpensesCount =
+      studentsFullDetailsArray[i].studentExpenses.length;
+    let studentExpenseTotal = 0;
+    let studentExpensesCountNew = 0;
+    // Calculate the Students total of expenses for THIS Report
+    for (let y = 0; y < studentExpensesCount; y++) {
+      if (studentsFullDetailsArray[i].studentExpenses[y].reportId == reportId) {
+        studentExpenseTotal += Number(
+          studentsFullDetailsArray[i].studentExpenses[y].expenseCost
+        );
+        studentExpensesCountNew++;
+      }
+    }
+    studentsFullDetailsArray[i].expensesTotal = Number(
+      studentExpenseTotal
+    ).toFixed(2);
+    studentsFullDetailsArray[
+      i
+    ].studentExpensesCountOnReport = studentExpensesCountNew;
+    // Only for the current report count...
+    //console.log(studentsFullDetailsArray, "AND THIS??");
+  }
+  return studentsFullDetailsArray.map((x) => basicDetails(x));
+}
+
 // Main funtion for the report details view
 async function getAllStudentsByReportId(reportId) {
   const allStudentsOnReport = await db.Account.find({
@@ -290,6 +357,15 @@ async function getReportsExpenses(reportsManagerId) {
   return resultsArray;
 }
 
+// used to check if account exists...
+async function getByEmail(accountEmail) {
+  const account = await db.Account.findOne({ email: accountEmail });
+  if (account) {
+    return basicDetails(account);
+  }
+  return null;
+}
+
 async function getById(id) {
   const account = await db.Account.findById(id)
     .populate("studentExpenses")
@@ -305,20 +381,25 @@ async function getById(id) {
   return basicDetails(account);
 }
 
+// Simultaniously create a personal reports list
 async function createAccount(params) {
   // validate
   if (await db.Account.findOne({ email: params.email })) {
     throw 'Email "' + params.email + '" is already registered';
   }
-
   const account = new db.Account(params);
   account.verified = Date.now();
-
   // hash password
   account.passwordHash = hash(params.password);
-
   // save account
   await account.save();
+  //console.log(account,"???what is this account???")
+  // Create A New Personal Reports List Simultaniously
+  const newPersonalReportsList = new db.PersonalReportsList({
+    accountId: account.id,
+  });
+  //console.log(newPersonalReportsList, "???");
+  await newPersonalReportsList.save();
 
   return basicDetails(account);
 }
@@ -372,19 +453,20 @@ async function updateExpensesOnAccount(accountId, params) {
   return basicDetails(account);
 }
 
+// Should restrict this to only admins...
 async function _delete(id) {
   const account = await getAccount(id);
   await account.remove();
 }
 
-// This maybe should be moved???
+// This maybe should be moved??? Im not currently utilizing this...
 async function updateReportsOnAccount(accountId, params) {
   const report = await new db.Report(params);
   report.updated = Date.now();
   await report.save();
   const account = await getAccount(accountId);
 
-  await account.reports.push(Report);
+  await account.reports.push(report);
   account.updated = Date.now();
   await account.save();
   return basicDetails(account);
@@ -460,7 +542,7 @@ function basicDetails(account) {
     updated,
     isVerified,
     lastLogin,
-    verificationToken,//<--- IDK if this is a good idea
+    verificationToken, //<--- IDK if this is a good idea
     isOnline,
     status,
     studentExpenses,
@@ -474,6 +556,8 @@ function basicDetails(account) {
     reportsManagerExpensesCount,
     reportsManagerStudentsCount,
     expensesTotal,
+    personalReportsList,
+    studentExpensesCountOnReport,
   } = account;
   return {
     id,
@@ -487,7 +571,7 @@ function basicDetails(account) {
     created,
     updated,
     isVerified,
-    verificationToken,//<--- IDK if this is a good idea
+    verificationToken, //<--- IDK if this is a good idea
     lastLogin,
     isOnline,
     status,
@@ -502,6 +586,8 @@ function basicDetails(account) {
     reportsManagerExpensesCount,
     reportsManagerStudentsCount,
     expensesTotal,
+    personalReportsList,
+    studentExpensesCountOnReport,
   };
 }
 

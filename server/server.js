@@ -29,10 +29,11 @@ app.use(
   })
 );
 
-// api routes
+// Main api routes
 app.use("/accounts", require("./accounts/accounts.controller"));
-app.use("/expenses", require("./expenses/expenses.controller"));
 app.use("/reports", require("./reports/reports.controller"));
+app.use("/expenses", require("./expenses/expenses.controller"));
+// Storage & Images Routes
 app.use("/storage", require("./images/images-service"));
 
 // swagger docs route

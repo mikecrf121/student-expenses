@@ -35,6 +35,13 @@ export class ReportService {
     return student;
   }
 
+  // Used to check if student is on report student list already..
+  async getOnReportStudentsListChecker(reportId: string, accountId:string) {
+    const reportStudentsListCheck = this.http.get<any>(`${baseUrl}/report-students-list/${reportId}/${accountId}/check-if-on`);
+    return reportStudentsListCheck;
+  }
+
+
   async create(params: any) {
     return this.http.post(baseUrl, params);
   }
@@ -47,7 +54,17 @@ export class ReportService {
     );
   }
 
-  delete(id: string) {
+  async updateReportStudentsList(reportId: string, accountId: string,body?:any) {
+    return this.http
+      .put(`${baseUrl}/report-students-list/${reportId}/${accountId}`,body)
+      .pipe(
+        map(async (reportStudentsList: any) => {
+          return reportStudentsList;
+        })
+      );
+  }
+
+  async delete(id: string) {
     return this.http.delete(`${baseUrl}/${id}`).pipe(finalize(() => {}));
   }
 }

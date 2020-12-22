@@ -2,7 +2,7 @@
   <ion-header class="ion-no-border">
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button defaultHref="/account/expenses"  style="beige; background: black; border-radius: 30%"></ion-back-button>
+        <ion-back-button defaultHref="/account/expenses"  style="color:beige; background: black; border-radius: 30%"></ion-back-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -38,6 +38,25 @@
           <ion-select-option>Other</ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="expenseCategory.valid || submitted == false" class="ion-padding-start">
+          Category is required
+        </p>
+      </ion-text>
+
+
+      <ion-item>
+        <ion-label position="floating" color="primary">Expense Report</ion-label>
+        <ion-select [(ngModel)]="addExpense.reportId" name="reportId" #reportId="ngModel">
+          <ion-select-option *ngIf="personalReportsList==null">Must Assign To A Report First!</ion-select-option>
+          <ion-select-option  *ngFor="let report of personalReportsList" value="{{report.reportId}}">{{report.reportName}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-text color="danger">
+        <p [hidden]="reportId.valid || submitted == false" class="ion-padding-start">
+          Report Selection is required
+        </p>
+      </ion-text>
 
       <ion-item>
         <ion-label position="floating" color="primary">Expense Cost</ion-label>

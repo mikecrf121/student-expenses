@@ -48,6 +48,7 @@ export class AccountDetailsPage {
   totalCurrencyString: string;
   allReportsManagers: Account[];
   loadReportsManagersListDone: boolean;
+  accountPersonalReportsList: any;
 
   constructor(
     public route: ActivatedRoute,
@@ -59,6 +60,7 @@ export class AccountDetailsPage {
     private _location: Location
   ) {}
   async ionViewWillEnter() {
+   // const startTime = Date.now();
     this.loading = this.alertService.presentLoading("Admin Student Expenses");
     (await this.loading).present();
     this.data = false;
@@ -72,6 +74,8 @@ export class AccountDetailsPage {
       .forEach(async (Account) => {
         //console.log(Account)
         this.account = Account;
+        // New for 1.4.0
+        this.accountPersonalReportsList = Account.personalReportsList;
         this.reportsManager = Account.reportsManager;
         this.studentReport = Account.studentReport;
         this.studentExpenses = Account.studentExpenses;
@@ -89,7 +93,7 @@ export class AccountDetailsPage {
             "MMM-DD-YYYY @HH:mm"
           );
         }
-        // Calculate expenses total and format each date
+        // Calculate expenses total and format each date, should use a subscriber here..
         for (let i = 0; i < this.studentExpensesCount; i++) {
           this.totalOfExpenses += Number(this.studentExpenses[i].expenseCost);
           this.studentExpenses[i].created = moment(
@@ -117,6 +121,7 @@ export class AccountDetailsPage {
       })
       .finally(async () => {
         // Might seem like a smoother transition doing this?
+        //console.log(Date.now()-startTime)
         this.data = true;
         setTimeout(async () => {
           (await this.loading).dismiss();

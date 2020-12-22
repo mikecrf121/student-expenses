@@ -16,6 +16,7 @@ module.exports = {
   Account: require("accounts/account.model"),
   Expense: require("expenses/expense.model"),
   Report: require("reports/report.model"),
+
   RefreshToken: require("accounts/refresh-token.model"),
   isValidId,
 };

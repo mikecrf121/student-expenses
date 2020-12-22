@@ -50,25 +50,9 @@ export class ExpenseDetailsPage {
   ) {}
 
   async ionViewWillEnter() {
-    this.data = false;
-    // back route after adding an expense
-    //console.log(this.backRoute);
-    // Check To Make sure returned back to the previous page correctly
-    // TODO this is a bug...
-    /*const urlLength = this.currentRoute.split("/expense-details/").length-1;
-    this.backRoute="";
-    console.log(urlLength)
-    for (let i = 0; i < urlLength; i++) {
-      console.log(this.currentRoute.split('/expense-details/')[i])
-      this.backRoute +=this.currentRoute.split(
-        "expense-details/"
-      )[i];
-    }*/
-
-    //console.log(this.backRoute,"what is this??")
-
     this.loading = this.alertService.presentLoading("Student Expenses");
     (await this.loading).present();
+    this.data = false;
     this.accountId = this.accountService.accountValue.id;
     this.expenseId = this.route.snapshot.paramMap.get("expenseId");
 
@@ -84,8 +68,8 @@ export class ExpenseDetailsPage {
         this.expenseName = Element.expenseName;
         this.expenseCost = Element.expenseCost;
         //TODO fix these to be singular returns
-        this.expenseCreatedBy = Element.expenseStudent[0];
-        this.expenseReport = Element.expenseReport[0];
+        this.expenseCreatedBy = Element.expenseStudent;
+        this.expenseReport = Element.expenseReport;
         this.expenseCategory = Element.expenseCategory;
         this.expenseCreated = moment(Element.created).format(
           "MMM-DD-YYYY @HH:mm"
@@ -99,7 +83,7 @@ export class ExpenseDetailsPage {
       });
   }
 
-  async editExpense(contextParamValue) {
+  async editExpense(contextParamValue: string) {
     let popUpText: string;
     let currentValue: string | boolean;
 

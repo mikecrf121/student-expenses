@@ -26,21 +26,21 @@ schema.virtual("expenseStudent", {
   ref: "Account", // The model to use
   localField: "studentId", // Find people where `localField`
   foreignField: "_id", // is equal to `foreignField`
-  justOne: false,
+  justOne: true,
 });
 
 schema.virtual("expenseReport", {
   ref: "Report", // The model to use
   localField: "reportId", // Find people where `localField`
   foreignField: "_id", // is equal to `foreignField`
-  justOne: false,
+  justOne: true,
 });
 
 schema.virtual("expenseReportsManager", {
   ref: "Account", // The model to use
   localField: "reportsManagerId", // Find people where `localField`
   foreignField: "_id", // is equal to `foreignField`
-  justOne: false,
+  justOne: true,
 });
 
 schema.set("toJSON", {

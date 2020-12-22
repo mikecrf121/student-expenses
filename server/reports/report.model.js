@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const schema = new Schema(
   {
     reportsManagerId: { type: String, required: true },
+    reportStudentsList: { type: Array, required: false }, // Going to just do this instead of creating a new doc collection...
     reportName: { type: String, required: false },
     status: {
       code: { type: String, required: true, default: "Active" },
@@ -14,6 +15,14 @@ const schema = new Schema(
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+/* DEPRECATED
+schema.virtual("reportStudentsList", {
+  ref: "ReportStudentsList", // The model to use
+  localField: "_id", // Find people where `localField`
+  foreignField: "reportId", // is equal to `foreignField`
+  justOne: true,
+});*/
 
 schema.virtual("reportStudents", {
   ref: "Account", // The model to use

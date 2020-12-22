@@ -7,15 +7,51 @@ module.exports = {
   update,
   delete: _delete,
   getAllReportsOnAccount,
+  onReportStudentsListChecker,
+  updateReportStudentsList
 };
 
 async function getAll() {
   const report = await db.Report.find()
-    .populate("reportStudentsCount")
+    //.populate("reportStudentsCount") REMOVED 1.2.1 //<-----Deprecated
     .populate("reportExpensesCount")
     .populate("reportsManager");
 
+
   return report.map((x) => basicDetails(x));
+}
+
+// return true or false...
+async function onReportStudentsListChecker(params) {
+  const report = await db.Report.findOne({
+    _id: params.reportId,
+  });
+
+  const reportStudentsListArray = await report.reportStudentsList;
+
+  if (
+    reportStudentsListArray.some(
+      (student) => student.accountId == params.accountId
+    )
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+// ergo adding to this.....
+async function updateReportStudentsList(params) {
+  const report = await db.Report.findOne({
+    _id: params.reportId,
+  });
+
+  await report.reportStudentsList.push({ accountId: params.accountId });
+
+  report.updated = Date.now();
+  await report.save();
+  return basicDetails(report);
 }
 
 async function getById(id) {
@@ -24,10 +60,14 @@ async function getById(id) {
   return basicDetails(report);
 }
 
+// When I create a new report, im also creating a report students list
 async function create(params) {
   const report = new db.Report(params);
-  await report.save();
-  return basicDetails(report);
+  await report
+    .save()
+    .finally(async () => {
+      return basicDetails(report);
+    });
 }
 
 async function update(id, params) {
@@ -86,7 +126,7 @@ function basicDetails(report) {
     reportsManager,
     reportName,
     reportStudents,
-    reportStudentsCount,
+    reportStudentsList,
     reportExpensesCount,
     reportExpenses,
     created,
@@ -98,7 +138,7 @@ function basicDetails(report) {
     reportsManager,
     reportName,
     reportStudents,
-    reportStudentsCount,
+    reportStudentsList,
     reportExpensesCount,
     reportExpenses,
     created,

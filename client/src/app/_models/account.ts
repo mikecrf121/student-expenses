@@ -26,4 +26,5 @@ export class Account {
   studentReport?: any;
   status: Status;
   verificationToken:string; // This is probably a bad idea.
+  personalReportsList: any;
 }

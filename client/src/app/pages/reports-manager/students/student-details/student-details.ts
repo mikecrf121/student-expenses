@@ -37,6 +37,7 @@ export class StudentDetailsPage {
   data: boolean;
   currentReport: Report | undefined;
   totalCurrencyString: string;
+  studentPersonalReportsList: any;
 
   constructor(
     public route: ActivatedRoute,
@@ -65,6 +66,9 @@ export class StudentDetailsPage {
     (await this.accountService.getById(this.student.id))
       .forEach(async (Element) => {
         //console.log(Element)
+        // New for 1.4.0
+        this.studentPersonalReportsList = Element.personalReportsList;
+        //
         this.student = Element;
         this.student.created = moment(Element.created).format("MMM-DD-YYYY");
         this.student.lastLogin = Element.lastLogin;

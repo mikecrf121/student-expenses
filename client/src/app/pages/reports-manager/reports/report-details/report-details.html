@@ -91,8 +91,9 @@
               </ion-label>
               <ion-label>
                 <p>
-                  <b>Expenses:&nbsp;( {{account.studentExpensesCount}} )</b>
+                  <b><u>All Expenses</u></b>
                 </p>
+                <p>( {{account.studentExpensesCount}} )</p>
               </ion-label>
             </ion-item>
           </ion-card>
@@ -122,8 +123,8 @@
                 <h1>{{expense.expenseName}}</h1>
                 <p>${{expense.expenseCost}}</p>
                 <p>
-                  Created By: {{expense.expenseStudent[0].firstName}}
-                  {{expense.expenseStudent[0].lastName}}
+                  Created By: {{expense.expenseStudent.firstName}}
+                  {{expense.expenseStudent.lastName}}
                 </p>
                 <p>{{expense.created}}</p>
                 <p>{{expense.expenseCategory}}</p>
@@ -153,7 +154,7 @@
                 <ion-item detail="false" lines="none">
                   <ion-label>
                     <h1><b>{{student.firstName}} {{student.lastName}}</b></h1>
-                    <h3>Expenses: ( {{student.studentExpensesCount}} )</h3>
+                    <h3>Rpt. Expenses: ( {{student.studentExpensesCountOnReport}} )</h3>
                     <h4>Total: ${{student.expensesTotal}}</h4>
                   </ion-label>
                   <ion-label>

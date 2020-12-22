@@ -16,10 +16,11 @@ import { Account } from "@app/_models";
   styleUrls: ["./add-expense.scss"],
 })
 export class AddExpensePage {
-  account: Account = this.accountService.accountValue;
+  account: Account;
   submitted: boolean = false;
 
   addExpense: ExpenseOptions = {
+    reportId:"",
     expenseName: "",
     expenseCost: "",
     expenseCategory: "",
@@ -27,6 +28,8 @@ export class AddExpensePage {
   loading: Promise<HTMLIonLoadingElement>;
   savingExpense: Promise<HTMLIonLoadingElement>;
   accountId: string;
+  personalReportsList: any;
+  acctFetched: Account;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,13 +44,28 @@ export class AddExpensePage {
   async ionViewWillEnter() {
     this.loading = this.alertService.presentLoading("Student Expenses");
     (await this.loading).present();
-    this.accountId = this.route.snapshot.paramMap.get("accountId"); //<----------potentially null for regular students
-  }
+    this.account = null;
+    this.account = this.accountService.accountValue;
+    //console.log(this.account,"The account???")
 
-  async ionViewDidEnter() {
-    setTimeout(async () => {
-      (await this.loading).dismiss();
-    }, 300);
+    this.accountId = this.route.snapshot.paramMap.get("accountId"); //<----------potentially null for regular students
+    let acctId: string;
+    this.accountId ? (acctId = this.accountId) : (acctId = this.account.id);
+    //<------------------- Admin Is Adding Expense for somebody
+    //form.value.studentId = this.accountId;
+    await (await this.accountService.getById(acctId))
+      .forEach(async (Element) => {
+        // Replace this with their personal reports list....
+        //console.log(Element);
+        this.acctFetched = Element;
+        this.personalReportsList = Element.personalReportsList;
+        //console.log(this.personalReportsList);
+      })
+      .finally(() => {
+        setTimeout(async () => {
+          (await this.loading).dismiss();
+        }, 100);
+      });
   }
 
   async onAddExpense(form?: NgForm) {
@@ -71,23 +89,9 @@ export class AddExpensePage {
       }, 300);
       return;
     }
-
-    if (this.accountId) {
-      //<------------------- Admin Is Adding Expense for somebody
-      form.value.studentId = this.accountId;
-      await (await this.accountService.getById(this.accountId)).forEach(
-        async (Element) => {
-          form.value.reportId = Element.reportId;
-          form.value.reportsManagerId = Element.reportsManagerId;
-        }
-      );
-    } else {
-      //<--------------------------------Regular student adding their own expense
-      form.value.studentId = this.account.id;
-      form.value.reportId = this.account.reportId;
-      form.value.reportsManagerId = this.account.reportsManagerId;
-    }
-
+    form.value.reportsManagerId = this.acctFetched.reportsManagerId;
+    form.value.studentId = this.acctFetched.id;
+    //console.log(form.value);
     (await this.expenseService.create(form.value)).pipe(first()).subscribe({
       next: async () => {
         setTimeout(async () => {

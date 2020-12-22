@@ -9,8 +9,8 @@ const reportService = require("../reports/report.service");
 const expenseService = require("../expenses/expense.service");
 
 // routes for accounts services like login authenticate etc.
-router.post("/authenticate", authenticateSchema, authenticate);
-router.post("/register", registerSchema, register);
+router.post("/authenticate",authenticateSchema, authenticate);
+router.post("/register", /*registerSchema,*/ register);
 router.post("/verify-email", verifyEmailSchema, verifyEmail);
 router.post("/forgot-password", forgotPasswordSchema, forgotPassword);
 router.post("/reset-password", resetPassword);
@@ -38,7 +38,10 @@ router.get(
 );
 //
 router.get("/:accountId", authorize(), getById);
+router.get("/:accountEmail/by-email", authorize(), getByEmail);
 router.get("/:reportId/report-students", authorize(), getAllStudentsByReportId);
+// New on 1.2.1
+router.get("/:reportId/report-students-by-report-id", authorize(), getStudentsOnReport);
 router.post("/", createSchema, createAccount);
 router.put("/:accountId", authorize(), update);
 router.delete("/:accountId", authorize(), _delete);
@@ -66,6 +69,13 @@ router.get(
   authorize(),
   getAllExpensesInReports
 );
+
+router.put(
+  "/personal-reports-list/:accountId/:reportId",
+  authorize([Role.Admin, Role.ReportsManager]),
+  updatePersonalReportsList
+);
+
 module.exports = router;
 
 function getAllStudentsInReports(req, res, next) {
@@ -73,6 +83,23 @@ function getAllStudentsInReports(req, res, next) {
   accountService
     .getAllStudentsInReports(req.params.reportsManagerId)
     .then((accounts) => res.json(accounts))
+    .catch(next);
+}
+
+// New for 1.2.1 
+function getStudentsOnReport(req, res, next) {
+  //console.log(req)
+  accountService
+    .getStudentsOnReport(req.params.reportId)
+    .then((accounts) => res.json(accounts))
+    .catch(next);
+}
+
+// when adding to a personal reports list...
+function updatePersonalReportsList(req, res, next) {
+  accountService
+    .updatePersonalReportsList(req.params)
+    .then((PersonalReportsList) => res.json(PersonalReportsList))
     .catch(next);
 }
 
@@ -284,13 +311,22 @@ function getAllReportsManagerReports(req, res, next) {
     .catch(next);
 }
 
+// Checker to see if account already exists....
+function getByEmail(req, res, next){
+  //console.log(req.user);
+  accountService
+    .getByEmail(req.params.accountEmail)
+    .then((account) => (account ? res.json(account) : res.json(null)))
+    .catch(next);
+
+}
+
 function getById(req, res, next) {
   // Students can get their own account and admins can get any account
-  //console.log(req.params,"????")
-  //console.log(req.Student,"tf")
+  //console.log(req.params,"????");
   /*if (
-    req.params.accountId !== req.Student.accountId &&
-    req.Student.role !== Role.Admin
+    req.params.accountId !== req.user.idd &&
+    req.user.role !== Role.Admin
   ) {
     return res.status(401).json({ message: "Unauthorized" });
   }*/
@@ -334,8 +370,8 @@ function updateSchema(req, res, next) {
     confirmPassword: Joi.string().valid(Joi.ref("password")).empty(""),
   };
 
-  // only admins can update role
-  if (req.Student.role === Role.Admin) {
+  // only admins can update role.... req.user ... not req.student
+  if (req.user.role === Role.Admin) {
     schemaRules.role = Joi.string()
       .valid(Role.Admin, Role.Student, Role.reportsManager)
       .empty("");
@@ -348,7 +384,7 @@ function updateSchema(req, res, next) {
 function update(req, res, next) {
   // Students can update their own account and admins can update any account, THIS IS SO IMPORTANT NOT ACCOUNT ID ITS ID FOR Student.id
   if (req.params.accountId !== req.user.id && req.user.role !== Role.Admin) {
-    return res.status(399).json({
+    return res.status(401).json({
       message: "Unauthorized update to someone else account, your bad",
     });
   }

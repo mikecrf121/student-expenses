@@ -101,9 +101,12 @@
 
       <ion-row>
         <ion-col>
-          <ion-item ><b>Email:&nbsp;</b>
-            <ion-button *ngIf="!account.isVerified" fill="outline" (click)="verificationOverideAreYouSure()">Verify Override</ion-button>&nbsp;<b *ngIf="account.isVerified==false" style="color: firebrick" (click)="changeAccount('email')">{{account.email}} (Not Verified)</b>
-            <b *ngIf="account.isVerified==true" style="color: green" (click)="changeAccount('email')">{{account.email}} (Verified)</b>
+          <ion-item><b>Email:&nbsp;</b>
+            <ion-button *ngIf="!account.isVerified" fill="outline" (click)="verificationOverideAreYouSure()">Verify
+              Override</ion-button>&nbsp;<b *ngIf="account.isVerified==false" style="color: firebrick"
+              (click)="changeAccount('email')">{{account.email}} (Not Verified)</b>
+            <b *ngIf="account.isVerified==true" style="color: green" (click)="changeAccount('email')">{{account.email}}
+              (Verified)</b>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -131,20 +134,26 @@
             </span><span *ngIf="!reportsManager">No Reports Manager</span></ion-item>
         </ion-col>
       </ion-row>
+      <br>
 
-      <ion-row>
-        <ion-col>
-          <ion-item *ngIf="!studentReport && account.role=='Student'"><b>Current Expense Report:</b>&nbsp;Not Assigned To A Report Currently</ion-item>
-          <!-- Incase no report assignment yet-->
-          <ion-item *ngIf="account.role=='Student' && studentReport"><b>Current Expense Report:&nbsp;</b>
-            <ion-button fill="clear" routerLink="{{currentRoute}}/current-report-details/{{studentReport.id}}">
-              {{studentReport.reportName}}&nbsp;<ion-icon name="eye">
-              </ion-icon>
-            </ion-button>
-          </ion-item>
-        </ion-col>
-      </ion-row>
 
+      <!-- Incase no report assignment yet-->
+      <b>Current Expense Report(s):&nbsp;</b>
+      <ion-item  *ngFor="let report of accountPersonalReportsList" >
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-button fill="clear" routerLink="{{currentRoute}}/report-details/{{report.reportId}}">
+                {{report.reportName}}&nbsp;<ion-icon name="eye">
+                </ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+
+
+      <br>
       <ion-row>
         <ion-row>
           <ion-col>
@@ -217,4 +226,3 @@
     </ion-row>
   </div>
 </ion-content>
-
