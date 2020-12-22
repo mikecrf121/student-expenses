@@ -6,7 +6,6 @@ import { map, finalize, catchError } from "rxjs/operators";
 
 import { environment } from "@environments/environment";
 import { Account, Expense, Report } from "@app/_models";
-import { AccountsPage } from "@app/pages/admin/accounts/accounts";
 
 const baseUrl = `${environment.apiUrl}/accounts`;
 

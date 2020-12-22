@@ -232,8 +232,8 @@ export class ReportDetailsPage {
   async deleteReport() {
     this.deleting = this.alertService.presentLoading("Deleting Report...");
     (await this.deleting).present();
-    this.reportService
-      .delete(this.reportId)
+    (await this.reportService
+      .delete(this.reportId))
       .pipe(first())
       .subscribe({
         next: async () => {

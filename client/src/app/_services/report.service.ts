@@ -64,7 +64,7 @@ export class ReportService {
       );
   }
 
-  delete(id: string) {
+  async delete(id: string) {
     return this.http.delete(`${baseUrl}/${id}`).pipe(finalize(() => {}));
   }
 }
