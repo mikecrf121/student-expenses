@@ -10,7 +10,7 @@ A good test to see if your ready to have a go at running this is if your able to
 provided by Ionic in the Cli.  If your able to get that up no problem, you shouldnt have any issues
 running this app either, as I have NOT added any major packages to it.
 
-App is essentially, or going to be a full blown Expense Report's app, with the latest MEAN stack built on top of Ionic.  App Allows you to add any number of students to a Report, takes the average of total expenses by deviding total by number of students on Report.  You can then calculate by hitting calculate disbursements.
+App is essentially, or going to be a full blown Expense Report's app, with the latest MEAN stack built on top of Ionic.  App allows you to add any number of students to a Report, takes the average of total expenses by deviding total by number of students on Report.  You can then calculate by hitting calculate disbursements.
 
 If you do decide to fork, please update the mongoDB connection string in the server/config.
 You can point to a local instance or any other instance, first account created is always an Admin.
