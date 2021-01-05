@@ -55,7 +55,7 @@ export class ReportsListPage {
         this.reportsManagerId = this.accountService.accountValue.id;
       }
     }
-    (await this.accountService.getAllReportsOnAccount(this.reportsManagerId))
+    (this.accountService.getAllReportsOnAccount(this.reportsManagerId))
       .forEach(async (Element) => {
         //console.log(Element);
         this.reportsList = Element;

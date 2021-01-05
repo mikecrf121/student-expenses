@@ -122,7 +122,7 @@ export class ProfilePage {
   }
 
   private async updateAccountPassword(contextParamValue: string) {
-    (await this.accountService.update(this.accountID, contextParamValue))
+    (this.accountService.update(this.accountID, contextParamValue))
       .pipe(first())
       .subscribe({
         next: async () => {

@@ -56,7 +56,7 @@ export class StudentsListPage {
       }
     }
     // Get all of this.userId's students <-----who is a reports managers so his/her userId
-    (await this.account.getAllStudents(this.userId))
+    (this.account.getAllStudents(this.userId))
       .forEach(async (element) => {
         this.studentsList = element;
       })

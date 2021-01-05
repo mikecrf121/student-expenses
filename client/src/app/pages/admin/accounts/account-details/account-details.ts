@@ -69,7 +69,7 @@ export class AccountDetailsPage {
     this.totalOfExpenses = 0;
     // The account your viewing....
     this.accountId = this.route.snapshot.paramMap.get("accountId");
-    (await this.accountService.getById(this.accountId))
+    (this.accountService.getById(this.accountId))
       //Specifying the entity instead of just saying "Element", maybe rename to AccountDetails
       .forEach(async (Account) => {
         //console.log(Account)
@@ -154,7 +154,7 @@ export class AccountDetailsPage {
   }
 
   async verifyEmail(token: any) {
-    (await this.accountService.verifyEmail(await token))
+    (this.accountService.verifyEmail(await token))
       .pipe(first())
       .subscribe({
         next: async () => {
@@ -206,7 +206,7 @@ export class AccountDetailsPage {
   }
 
   async deleteAccount() {
-    (await this.accountService.delete(this.accountId)).pipe(first()).subscribe({
+    (this.accountService.delete(this.accountId)).pipe(first()).subscribe({
       next: async () => {
         //TODO Replace with toast alert
         (await this.deleting).dismiss();
@@ -353,7 +353,7 @@ export class AccountDetailsPage {
 
   private async updateAccount(contextParamValue: any, popUpText: string) {
     //console.log(contextParamValue,"what is this??")
-    (await this.accountService.update(this.accountId, contextParamValue))
+    (this.accountService.update(this.accountId, contextParamValue))
       .pipe(first())
       .subscribe({
         next: async () => {
@@ -379,7 +379,7 @@ export class AccountDetailsPage {
   // Loading the list of Reports Managers & Admins because they can also be Reports Managers
   async loadReportsManagers() {
     this.loadReportsManagersListDone = false;
-    (await this.accountService.getAllReportsManagers())
+    (this.accountService.getAllReportsManagers())
       .forEach(async (ReportsManagers) => {
         this.allReportsManagers = ReportsManagers;
       })

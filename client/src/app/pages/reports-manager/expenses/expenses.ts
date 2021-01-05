@@ -97,7 +97,7 @@ export class ExpensesListPage {
     }
     // According to simple test this foreach on the observable is just as fast then below subscribe???
     //const dateNOW = Date.now();
-    (await this.accountService.getAllExpensesInReports(this.userId))
+    (this.accountService.getAllExpensesInReports(this.userId))
       .forEach(async (element) => {
         this.reportsExpenses = element;
       })

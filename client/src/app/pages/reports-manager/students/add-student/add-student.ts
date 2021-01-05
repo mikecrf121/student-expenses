@@ -60,7 +60,7 @@ export class AddStudentPage {
     this.reportId = this.route.snapshot.paramMap.get("reportId");
     // get report, then the reportManagerId
     if (this.reportId != null) {
-      (await this.reportService.getById(this.reportId))
+      (this.reportService.getById(this.reportId))
         .forEach(async (Element) => {
           this.reportsManagerId = Element.reportsManagerId;
         })
@@ -90,7 +90,7 @@ export class AddStudentPage {
       return;
     }
     // Checking if Account Already Exists
-    const accountFinder$ = await this.accountService.getByEmail(
+    const accountFinder$ = this.accountService.getByEmail(
       form.value.email
     );
 
@@ -132,7 +132,7 @@ export class AddStudentPage {
       // Add student to report students list
       if (this.reportId) {
         // Check if already on this report then return...
-        const onListAlready$ = await this.reportService.getOnReportStudentsListChecker(
+        const onListAlready$ = this.reportService.getOnReportStudentsListChecker(
           this.reportId,
           account.id
         );
@@ -195,7 +195,7 @@ export class AddStudentPage {
       form.value.title = "N/A";
     }
     // If no account exists, Do This...
-    (await this.accountService.register(form.value)).pipe(first()).subscribe({
+    (this.accountService.register(form.value)).pipe(first()).subscribe({
       next: async () => {
         await this.alertService
           .createToastAlert(
@@ -221,7 +221,7 @@ export class AddStudentPage {
 
   // Add the Student/Account to the Report Students List
   async addStudentToReportStudentsList(reportId: string, studentId: string) {
-    (await this.reportService.updateReportStudentsList(reportId, studentId))
+    (this.reportService.updateReportStudentsList(reportId, studentId))
       .pipe(first())
       .subscribe({
         next: async () => {
@@ -246,7 +246,7 @@ export class AddStudentPage {
     accountId: string,
     reportId: string
   ) {
-    (await this.accountService.updatePersonalReportsList(accountId, reportId))
+    (this.accountService.updatePersonalReportsList(accountId, reportId))
       .pipe(first())
       .subscribe({
         next: async () => {

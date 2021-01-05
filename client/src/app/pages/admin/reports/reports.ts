@@ -71,7 +71,7 @@ export class ReportsPage {
         this.ios = (await this.config.get("mode")) === "ios";
       })
       .then(async () => {
-        await (await this.reportService.getAll())
+        (this.reportService.getAll())
           .forEach(async (Element) => {
             //console.log(Element);
             this.allReports = Element;

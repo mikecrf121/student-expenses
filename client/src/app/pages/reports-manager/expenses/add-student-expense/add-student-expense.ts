@@ -55,7 +55,7 @@ export class AddStudentExpensePage {
       this.studentId ? (acctId = this.studentId) : (acctId = this.account.id);
       //<------------------- Admin Is Adding Expense for somebody
       //form.value.studentId = this.accountId;
-      await (await this.accountService.getById(acctId))
+      (this.accountService.getById(acctId))
         .forEach(async (Element) => {
           // Replace this with their personal reports list....
           this.acctFetched = Element;
@@ -95,7 +95,7 @@ export class AddStudentExpensePage {
     form.value.reportsManagerId = this.acctFetched.reportsManagerId;
     form.value.studentId = this.acctFetched.id;
     console.log(form.value);
-    (await this.expenseService.create(form.value)).pipe(first()).subscribe({
+    (this.expenseService.create(form.value)).pipe(first()).subscribe({
       next: async () => {
         setTimeout(async () => {
           (await this.savingExpense).dismiss();

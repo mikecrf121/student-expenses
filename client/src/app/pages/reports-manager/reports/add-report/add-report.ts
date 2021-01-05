@@ -71,7 +71,7 @@ export class AddReportPage {
       }
     }
 
-    (await this.reportService.create(form.value)).pipe(first()).subscribe({
+    (this.reportService.create(form.value)).pipe(first()).subscribe({
       next: async () => {
         (await this.creatingReport).dismiss();
         this.alertService.createToastAlert(

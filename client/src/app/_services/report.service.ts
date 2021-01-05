@@ -22,31 +22,31 @@ export class ReportService {
     return this.ReportSubject.value;
   }
 
-  async getAll() {
+  getAll() {
     return this.http.get<Report[]>(baseUrl);
   }
 
-  async getById(id: string) {
+  getById(id: string) {
     return this.http.get<Report>(`${baseUrl}/${id}`);
   }
 
-  async getStudentByReportId(reportId: string) {
+  getStudentByReportId(reportId: string) {
     const student = this.http.get<Report>(`${baseUrl}/${reportId}/student`);
     return student;
   }
 
   // Used to check if student is on report student list already..
-  async getOnReportStudentsListChecker(reportId: string, accountId:string) {
+  getOnReportStudentsListChecker(reportId: string, accountId:string) {
     const reportStudentsListCheck = this.http.get<any>(`${baseUrl}/report-students-list/${reportId}/${accountId}/check-if-on`);
     return reportStudentsListCheck;
   }
 
 
-  async create(params: any) {
+  create(params: any) {
     return this.http.post(baseUrl, params);
   }
 
-  async update(id: string, params: any) {
+  update(id: string, params: any) {
     return this.http.put(`${baseUrl}/${id}`, params).pipe(
       map(async (report: any) => {
         return report;
@@ -54,7 +54,7 @@ export class ReportService {
     );
   }
 
-  async updateReportStudentsList(reportId: string, accountId: string,body?:any) {
+  updateReportStudentsList(reportId: string, accountId: string,body?:any) {
     return this.http
       .put(`${baseUrl}/report-students-list/${reportId}/${accountId}`,body)
       .pipe(
@@ -64,7 +64,7 @@ export class ReportService {
       );
   }
 
-  async delete(id: string) {
+  delete(id: string) {
     return this.http.delete(`${baseUrl}/${id}`).pipe(finalize(() => {}));
   }
 }

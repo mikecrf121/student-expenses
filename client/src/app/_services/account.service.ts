@@ -23,7 +23,7 @@ export class AccountService {
     return this.accountSubject.value;
   }
 
-  async login(email: string, password: string) {
+  login(email: string, password: string) {
     this.accountSubject.next(null);
     return this.http
       .post<any>(
@@ -40,7 +40,7 @@ export class AccountService {
       );
   }
 
-  async logout() {
+  logout() {
     this.http
       .post<any>(`${baseUrl}/revoke-token`, {}, { withCredentials: true })
       .subscribe();
@@ -63,23 +63,23 @@ export class AccountService {
       );
   }
 
-  async register(account: Account) {
+  register(account: Account) {
     return this.http.post(`${baseUrl}/register`, account);
   }
 
-  async verifyEmail(token: string) {
+  verifyEmail(token: string) {
     return this.http.post(`${baseUrl}/verify-email`, { token });
   }
 
-  async forgotPassword(email: string) {
+  forgotPassword(email: string) {
     return this.http.post(`${baseUrl}/forgot-password`, { email });
   }
 
-  async validateResetToken(token: string) {
+  validateResetToken(token: string) {
     return this.http.post(`${baseUrl}/validate-reset-token`, { token });
   }
 
-  async resetPassword(
+  resetPassword(
     token: string,
     password: string,
     confirmPassword: string
@@ -91,7 +91,7 @@ export class AccountService {
     });
   }
 
-  async getAll() {
+  getAll() {
     return this.http.get<Account[]>(baseUrl);
 
     //tests
@@ -120,60 +120,60 @@ export class AccountService {
 */
   }
 
-  async getById(accountId: string) {
+  getById(accountId: string) {
     return this.http.get<Account>(`${baseUrl}/${accountId}`);
   }
 
-  async getByEmail(accountEmail: string) {
+  getByEmail(accountEmail: string) {
     return this.http.get<Account>(`${baseUrl}/${accountEmail}/by-email`);
   }
 
-  async getAllStudents(reportsManagerId: string) {
+  getAllStudents(reportsManagerId: string) {
     return this.http.get<Account>(`${baseUrl}/${reportsManagerId}/students`);
   }
 
   // Return Report SPECIFIC Data 1.2.1
-  async getAllStudentsByReportId(reportId: string) {
+  getAllStudentsByReportId(reportId: string) {
     return this.http.get<Account[]>(`${baseUrl}/${reportId}/report-students-by-report-id`);
   }
 
   //***** For create account page for admins, get all reportsmanagers and admins who can also be a reports manager
   // I only want Name and there ID back
-  async getAllReportsManagers() {
+  getAllReportsManagers() {
     return this.http.get<Account[]>(`${baseUrl}/reports-managers-list`);
   }
   //***** For create account page for admins, get all reportsManager Reports
   // Should probably move this reports servic
-  async getAllReportsManagerReports(reportsManagerId: string) {
+  getAllReportsManagerReports(reportsManagerId: string) {
     return this.http.get<Report[]>(
       `${baseUrl}/${reportsManagerId}/reports-manager-reports`
     );
   }
 
   // Reports Manager Routes
-  async getReportsExpenses(reportsManagerId: string) {
+  getReportsExpenses(reportsManagerId: string) {
     return this.http.get<Account>(
       `${baseUrl}/${reportsManagerId}/expenses-on-reports`
     );
   }
-  async getAllReportsOnAccount(reportsManagerId: string) {
+  getAllReportsOnAccount(reportsManagerId: string) {
     return this.http.get<Report>(`${baseUrl}/${reportsManagerId}/reports`);
   }
-  async getAllExpensesInReports(reportsManagerId: string) {
+  getAllExpensesInReports(reportsManagerId: string) {
     return this.http.get<Report>(
       `${baseUrl}/${reportsManagerId}/reports-expenses`
     );
   }
   // should probably more this to expense service..
-  async getAllExpensesOnAccount(accountId: string) {
+  getAllExpensesOnAccount(accountId: string) {
     return this.http.get<Expense>(`${baseUrl}/${accountId}/expenses`);
   }
 
-  async create(params: any) {
+  create(params: any) {
     return this.http.post(baseUrl, params);
   }
 
-  async update(accountId: string, params: any) {
+  update(accountId: string, params: any) {
     return this.http.put(`${baseUrl}/${accountId}`, params).pipe(
       map(async (account: any) => {
         // update the current account if it was updated
@@ -187,7 +187,7 @@ export class AccountService {
     );
   }
 
-  async updatePersonalReportsList(
+  updatePersonalReportsList(
     accountId: string,
     reportId: string,
     params?: any
@@ -202,7 +202,7 @@ export class AccountService {
       );
   }
 
-  async delete(id: string) {
+  delete(id: string) {
     return this.http.delete(`${baseUrl}/${id}`).pipe(
       finalize(async () => {
         // auto logout if the logged in account was deleted
