@@ -79,7 +79,7 @@ export class ReportDetailsPage {
     }
     // This Chain can be split up later for lazy loading each section
     // Get Report Info
-    (await this.reportService.getById(this.reportId))
+    (this.reportService.getById(this.reportId))
       .forEach(async (Element) => {
         this.reportName = Element.reportName;
         this.reportCreated = moment(Element.created).format(
@@ -89,7 +89,7 @@ export class ReportDetailsPage {
       .then(async () => {
         // Get Report Students
         // NEW 1.2.1
-        (await this.accountService.getAllStudentsByReportId(this.reportId))
+        (this.accountService.getAllStudentsByReportId(this.reportId))
           .forEach(async (Elem) => {
             //console.log(Elem);
             this.reportStudents = Elem;
@@ -182,7 +182,7 @@ export class ReportDetailsPage {
     popUpText: string
   ) {
     //console.log(contextParamValue);
-    (await this.reportService.update(this.reportId, contextParamValue))
+    (this.reportService.update(this.reportId, contextParamValue))
       .pipe(first())
       .subscribe({
         next: async () => {
@@ -232,7 +232,7 @@ export class ReportDetailsPage {
   async deleteReport() {
     this.deleting = this.alertService.presentLoading("Deleting Report...");
     (await this.deleting).present();
-    (await this.reportService.delete(this.reportId)).pipe(first()).subscribe({
+    (this.reportService.delete(this.reportId)).pipe(first()).subscribe({
       next: async () => {
         (await this.deleting).dismiss();
         this.alertService.createToastAlert(

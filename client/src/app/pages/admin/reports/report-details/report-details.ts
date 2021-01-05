@@ -71,7 +71,7 @@ export class ReportDetailsPage {
 
     // This Chain can be split up later for lazy loading each section
     // Get Report Info
-    (await this.reportService.getById(this.reportId))
+    (this.reportService.getById(this.reportId))
       .forEach(async (Element) => {
         this.reportName = Element.reportName;
         this.reportsManager = Element.reportsManager;
@@ -81,7 +81,7 @@ export class ReportDetailsPage {
       })
       .then(async () => {
         // Get Report Students
-        (await this.accountService.getAllStudentsByReportId(this.reportId))
+        (this.accountService.getAllStudentsByReportId(this.reportId))
           .forEach(async (Elem) => {
             //console.log("All Report Students", Elem);
             this.reportStudents = Elem;
@@ -97,7 +97,7 @@ export class ReportDetailsPage {
           .then(async () => {
             // Get Report Expenses
             (
-              await this.expenseService.getAllExpensesByReportId(this.reportId)
+              this.expenseService.getAllExpensesByReportId(this.reportId)
             ).forEach(async (El) => {
               this.reportExpenses = El;
               this.reportExpensesCount = this.reportExpenses.length;
@@ -171,7 +171,7 @@ export class ReportDetailsPage {
   }
 
   private async updateReportMasterList(contextParamValue, popUpText:string) {
-    (await this.reportService.update(this.reportId, contextParamValue))
+    (this.reportService.update(this.reportId, contextParamValue))
       .pipe(first())
       .subscribe({
         next: async () => {
@@ -221,7 +221,7 @@ export class ReportDetailsPage {
   async deleteReport() {
     this.deleting = this.alertService.presentLoading("Deleting Report...");
     (await this.deleting).present();
-    (await this.reportService
+    (this.reportService
       .delete(this.reportId))
       .pipe(first())
       .subscribe({

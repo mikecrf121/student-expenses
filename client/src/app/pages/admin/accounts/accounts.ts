@@ -83,7 +83,7 @@ export class AccountsPage {
         this.ios = this.config.get("mode") === "ios";
       })
       .then(async () => {
-        await (await this.accountService.getAll()).forEach(async (Element) => {
+        (this.accountService.getAll()).forEach(async (Element) => {
           this.allAccounts = Element;
           //console.log(this.allAccounts, "right here");
         });

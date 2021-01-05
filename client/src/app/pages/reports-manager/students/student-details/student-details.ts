@@ -63,7 +63,7 @@ export class StudentDetailsPage {
         "/" + "reports-manager/students/student-details"
       );
     }
-    (await this.accountService.getById(this.student.id))
+    (this.accountService.getById(this.student.id))
       .forEach(async (Element) => {
         //console.log(Element)
         // New for 1.4.0

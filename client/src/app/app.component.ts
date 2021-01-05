@@ -155,26 +155,27 @@ export class AppComponent implements OnInit {
   }
 
   async listenForLoginEvents() {
-    window.addEventListener("user:login", async () => {
-      await this.updateLoggedInStatus(true);
-    });
+    window.addEventListener(
+      "user:login",
+      async () => await this.updateLoggedInStatus(true)
+    );
 
-    window.addEventListener("user:signup", async () => {
-      await this.updateLoggedInStatus(true);
-    });
+    window.addEventListener(
+      "user:signup",
+      async () => await this.updateLoggedInStatus(true)
+    );
 
-    window.addEventListener("user:logout", async () => {
-      await this.updateLoggedInStatus(false);
-    });
+    window.addEventListener(
+      "user:logout",
+      async () => await this.updateLoggedInStatus(false)
+    );
   }
 
   async logout() {
     this.loggingOut = this.alertService.presentLoading("Logging Out...");
     (await this.loggingOut)
       .present()
-      .then(async () => {
-        await this.userData.logout();
-      })
+      .then(async () => await this.userData.logout())
       .finally(async () => {
         (await this.loggingOut).dismiss();
       });

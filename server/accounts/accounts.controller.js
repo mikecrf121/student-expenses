@@ -47,7 +47,7 @@ router.put("/:accountId", authorize(), update);
 router.delete("/:accountId", authorize(), _delete);
 
 // TODO routes to add Expenses BASIC FUNCTIONALITY, also TODO Authorize for all...
-//router.put("/:accountId/Expenses/", authorize(), pushPetToAccount);
+//router.put("/:accountId/Expenses/", authorize(), pushExpenseToAccount);
 router.get("/:accountId/expenses/", authorize(), getAllExpensesOnAccount);
 
 // reports Manager Routes

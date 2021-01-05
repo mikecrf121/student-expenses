@@ -61,7 +61,7 @@ export class ExpenseDetailsPage {
       // need better logic for this
     }
 
-    (await this.expenseService.getById(this.expenseId))
+    (this.expenseService.getById(this.expenseId))
       .forEach(async (Element) => {
         //console.log(Element);
         //TODO just makes this converge into one expense object
@@ -229,7 +229,7 @@ export class ExpenseDetailsPage {
     contextParamValue: any,
     popUpText: string
   ) {
-    (await this.expenseService.update(this.expenseId, contextParamValue))
+    (this.expenseService.update(this.expenseId, contextParamValue))
       .pipe(first())
       .subscribe({
         next: async () => {
@@ -278,7 +278,7 @@ export class ExpenseDetailsPage {
 
   async deleteExpense() {
     (await this.deleting).present();
-    (await this.expenseService.delete(this.expenseId)).pipe(first()).subscribe({
+    (this.expenseService.delete(this.expenseId)).pipe(first()).subscribe({
       next: async () => {
         (await this.deleting).dismiss();
         this.alertService.createToastAlert(

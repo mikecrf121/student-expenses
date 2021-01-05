@@ -60,7 +60,7 @@ export class ExpensesListPage {
     this.otherIsChecked = true;
     this.userId = this.accountService.accountValue.id;
     //console.log(this.userId);
-    (await this.accountService.getAllExpensesOnAccount(this.userId))
+    (this.accountService.getAllExpensesOnAccount(this.userId))
       .forEach(async (Element) => {
         //console.log(Element);
         this.expensesList = Element;

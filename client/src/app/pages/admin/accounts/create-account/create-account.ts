@@ -63,10 +63,10 @@ export class CreateAccountPage {
     }
     form.value.confirmPassword = form.value.password;
     form.value.acceptTerms = true;
-    (await this.accountService.register(form.value)).pipe(first()).subscribe({
+    (this.accountService.register(form.value)).pipe(first()).subscribe({
       next: async () => {
         (await this.signUpLoader).dismiss();
-        await this.alertService.createToastAlert(
+        this.alertService.createToastAlert(
           `Email Sent To ${form.value.firstName} for verification instructions`,
           "success",
           5000
@@ -76,7 +76,7 @@ export class CreateAccountPage {
       },
       error: async (error) => {
         (await this.signUpLoader).dismiss();
-        await this.alertService.createToastAlert(
+        this.alertService.createToastAlert(
           "Email Invite Failed Failed!",
           "danger",
           5000
@@ -89,7 +89,7 @@ export class CreateAccountPage {
   // Loading the list of Reports Managers & Admins because they can also be Reports Managers
   async loadReportsManagers(role: string) {
     if (role == "Student") {
-      (await this.accountService.getAllReportsManagers())
+      (this.accountService.getAllReportsManagers())
         .forEach(async (Element) => {
           this.allReportsManagers = Element;
         })
@@ -102,7 +102,7 @@ export class CreateAccountPage {
   // Loading the List of Reports the Reports Manager Selected is responsible for
   async loadReportsManagerReports(reportsManagerId: string) {
     if (reportsManagerId != undefined) {
-      (await this.accountService.getAllReportsManagerReports(reportsManagerId))
+      (this.accountService.getAllReportsManagerReports(reportsManagerId))
         .forEach(async (Element) => {
           this.allReportsManagerReports = Element;
         })

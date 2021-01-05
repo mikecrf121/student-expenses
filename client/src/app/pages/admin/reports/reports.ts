@@ -32,13 +32,11 @@ export class ReportsPage {
   showSearchbar: boolean;
   allReports: any | [Report];
   adminsIsChecked: boolean;
-  petOwnersIsChecked: boolean;
   ReportManagersIsChecked: boolean;
 
   deadData = [0, 1, 2, 3, 4, 5, 6, 7, 8]; //skeleton
 
   adminCondition: string = "";
-  petOwnerCondition: string = "";
   ReportManagerCondition: string = "";
   currentRoute: string = this.router.url;
   data: boolean;
@@ -69,12 +67,11 @@ export class ReportsPage {
       .present()
       .then(async () => {
         this.adminsIsChecked = true;
-        this.petOwnersIsChecked = true;
         this.ReportManagersIsChecked = true;
         this.ios = (await this.config.get("mode")) === "ios";
       })
       .then(async () => {
-        await (await this.reportService.getAll())
+        (this.reportService.getAll())
           .forEach(async (Element) => {
             //console.log(Element);
             this.allReports = Element;

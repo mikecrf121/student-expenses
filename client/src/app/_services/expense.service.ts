@@ -23,23 +23,23 @@ export class ExpenseService {
     return this.ExpenseSubject.value;
   }
 
-  async getAll() {
+  getAll() {
     return this.http.get<Expense[]>(baseUrl);
   }
 
-  async getById(id: string) {
+  getById(id: string) {
     return this.http.get<Expense>(`${baseUrl}/${id}`);
   }
 
-  async getAllExpensesByReportId(reportId: string) {
+  getAllExpensesByReportId(reportId: string) {
     return this.http.get<Expense[]>(`${baseUrl}/${reportId}/report-expenses`);
   }
 
-  async create(params: any) {
+  create(params: any) {
     return this.http.post(baseUrl, params);
   }
 
-  async update(id: string, params) {
+  update(id: string, params) {
     return this.http.put(`${baseUrl}/${id}`, params).pipe(
       map(async (expense: any) => {
         // update the current Expense if it was updated
@@ -53,7 +53,7 @@ export class ExpenseService {
     );
   }
 
-  async delete(id: string) {
+  delete(id: string) {
     return this.http.delete(`${baseUrl}/${id}`).pipe(
       finalize(async () => {
         // not sure if needed
